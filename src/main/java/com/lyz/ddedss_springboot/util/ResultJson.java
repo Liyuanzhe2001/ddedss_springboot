@@ -8,7 +8,7 @@ import java.util.Map;
 public class ResultJson<T> {
 
     private int code;
-    private String msg;
+    private String msg = "";
     private T data;
     private Map<String, Object> map;
 
