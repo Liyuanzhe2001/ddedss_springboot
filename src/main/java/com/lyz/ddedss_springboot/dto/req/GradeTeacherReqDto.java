@@ -1,4 +1,4 @@
-package com.lyz.ddedss_springboot.vo;
+package com.lyz.ddedss_springboot.dto.req;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Accessors(chain = true)
 @TableName("class")
-public class EvaluateTeacherVO implements Serializable {
+public class GradeTeacherReqDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,8 +38,8 @@ public class EvaluateTeacherVO implements Serializable {
     private String subjectName;
 
     /**
-     * 评分
+     * 结果（0差，1优）
      */
-    private Short evaluate;
+    private Short final_;
 
 }

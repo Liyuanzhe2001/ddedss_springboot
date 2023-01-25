@@ -1,4 +1,4 @@
-package com.lyz.ddedss_springboot.vo;
+package com.lyz.ddedss_springboot.dto.resp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class ClassSubjectVO implements Serializable {
+public class QueryClassAndSubjectByTeacherIdRespDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,13 +36,8 @@ public class ClassSubjectVO implements Serializable {
     private Integer subjectId;
 
     /**
-     * 课程名称
+     * 课程名
      */
     private String subjectName;
-
-    /**
-     * 是否完成（0未完成，1已完成）
-     */
-    private Short haveFinish;
 
 }

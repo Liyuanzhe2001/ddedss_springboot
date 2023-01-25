@@ -1,6 +1,8 @@
 package com.lyz.ddedss_springboot.controller;
 
-import com.lyz.ddedss_springboot.vo.SubjectLevelVO;
+import com.lyz.ddedss_springboot.dto.req.ModifyTeacherSubjectLevelReqDto;
+import com.lyz.ddedss_springboot.dto.resp.QueryTeacherSubjectLevelRespDto;
+import com.lyz.ddedss_springboot.util.ResultJson;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,40 +16,17 @@ public class TeacherSubjectController extends BaseController {
 
     /**
      * 查询教师科目熟悉程度
-     *
-     * @return {
-     * code - 状态码
-     * msg - 信息
-     * subjectLevel:[
-     * {
-     * name - 科目
-     * level - 熟悉度
-     * }
-     * ]
-     * }
      */
     @GetMapping("/query_teacher_subject_level")
-    public String queryTeacherSubjectLevel() {
+    public ResultJson<List<QueryTeacherSubjectLevelRespDto>> queryTeacherSubjectLevel() {
         return null;
     }
 
     /**
      * 修改教师科目熟悉程度
-     *
-     * @param subjectLevel [
-     *                     {
-     *                     name - 科目
-     *                     level - 熟悉度
-     *                     }
-     *                     ]
-     * @return {
-     * code - 状态码
-     * msg - 信息
-     * }
-     * }
      */
     @PutMapping("/modify_teacher_subject_level")
-    public String modifyTeacherSubjectLevel(List<SubjectLevelVO> subjectLevel) {
+    public ResultJson<Void> modifyTeacherSubjectLevel(List<ModifyTeacherSubjectLevelReqDto> reqDtos) {
         return null;
     }
 

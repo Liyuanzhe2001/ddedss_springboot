@@ -2,32 +2,33 @@ package com.lyz.ddedss_springboot.util;
 
 import cn.hutool.json.JSONUtil;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResultJson<T> {
+public class ResultJson<T> implements Serializable {
 
-    private int code;
+    private Integer code;
     private String msg = "";
     private T data;
-    private Map<String, Object> map;
+    private Integer total = 0;
 
-    public ResultJson() {
-        map = new HashMap<>();
+    public ResultJson(Integer code, String msg) {
+        this.code = code;
+        this.msg = msg;
     }
 
-    public ResultJson(int code, String msg, T data) {
-        map = new HashMap<>();
-        map.put("code", code);
-        map.put("msg", msg);
-        map.put("data", data);
+    public ResultJson(Integer code, String msg, T data) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
     }
 
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 
@@ -39,9 +40,19 @@ public class ResultJson<T> {
         this.msg = msg;
     }
 
-    @Override
-    public String toString() {
-        return JSONUtil.toJsonStr(map);
+    public void setData(T data) {
+        this.data = data;
     }
 
+    public T getData() {
+        return data;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
 }

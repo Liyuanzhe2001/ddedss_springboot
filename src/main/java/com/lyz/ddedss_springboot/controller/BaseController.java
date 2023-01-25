@@ -2,6 +2,7 @@ package com.lyz.ddedss_springboot.controller;
 
 import com.lyz.ddedss_springboot.exception.BaseException;
 import com.lyz.ddedss_springboot.exception.NoLoginException;
+import com.lyz.ddedss_springboot.exception.NumberOrPasswordException;
 import com.lyz.ddedss_springboot.util.ResultJson;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,10 +37,11 @@ public class BaseController {
      */
     @ExceptionHandler({BaseException.class})
     public String handleException(Throwable e) {
-        ResultJson<Void> result = new ResultJson<>();
-        result.setCode(ERR);
+        ResultJson<Void> result = new ResultJson<>(ERR, "");
         if (e instanceof NoLoginException) {
             result.setMsg("用户未登录");
+        } else if (e instanceof NumberOrPasswordException) {
+            result.setMsg("账号或密码错误");
         }
         return result.toString();
     }

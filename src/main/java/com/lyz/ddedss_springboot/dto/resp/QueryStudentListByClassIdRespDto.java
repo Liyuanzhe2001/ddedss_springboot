@@ -1,26 +1,33 @@
-package com.lyz.ddedss_springboot.vo;
+package com.lyz.ddedss_springboot.dto.resp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class StudentScoreVO {
+public class QueryStudentListByClassIdRespDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 学生id
      */
-    private Integer id;
+    private Integer studentId;
 
     /**
-     * 分数
+     * 姓名
      */
-    private Integer score;
+    private String studentName;
+
+    /**
+     * 性别
+     */
+    private Short sex;
 
 }

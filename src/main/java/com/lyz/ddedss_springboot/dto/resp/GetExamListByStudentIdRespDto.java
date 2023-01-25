@@ -1,4 +1,4 @@
-package com.lyz.ddedss_springboot.vo;
+package com.lyz.ddedss_springboot.dto.resp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,18 +11,18 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class SubjectLevelVO implements Serializable {
+public class GetExamListByStudentIdRespDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 科目
+     * 考试id
      */
-    private String subjectName;
-
+    private Integer examId;
 
     /**
-     * 熟悉度
+     * 考试名
      */
-    private Short level;
+    private String examName;
+
 }
