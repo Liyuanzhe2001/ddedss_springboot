@@ -6,6 +6,8 @@ import com.lyz.ddedss_springboot.util.ResultJson;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * 控制层基类
  */
@@ -22,6 +24,11 @@ public class BaseController {
     public static final int ERR = -1;
 
     /**
+     * session
+     */
+    public static HttpSession session;
+
+    /**
      * 统一处理抛出的异常
      * 请求处理方法，这个方法的返回值就是需要传递给前端的数据
      * 自动将异常对象传递给此方法的参数列表上
@@ -35,6 +42,35 @@ public class BaseController {
             result.setMsg("用户未登录");
         }
         return result.toString();
+    }
+
+    public void setSession(String key, Object value) {
+        session.setAttribute(key, value);
+    }
+
+    public void setIdAndUsername(Integer id, String username) {
+        setSession("id", id);
+        setSession("username", username);
+    }
+
+    public void setId(Integer id) {
+        setSession("id", id);
+    }
+
+    public void setUsername(String username) {
+        setSession("username", username);
+    }
+
+    public Object getValue(String key) {
+        return session.getAttribute(key);
+    }
+
+    public Integer getId() {
+        return (Integer) session.getAttribute("id");
+    }
+
+    public String getUsername() {
+        return (String) session.getAttribute("username");
     }
 
 }

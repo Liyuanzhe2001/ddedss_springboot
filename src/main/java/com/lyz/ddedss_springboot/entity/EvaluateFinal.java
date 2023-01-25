@@ -8,14 +8,13 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@TableName("evaluate")
-public class Evaluate implements Serializable {
+@TableName("evaluate_final")
+public class EvaluateFinal implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,16 +25,22 @@ public class Evaluate implements Serializable {
     private Integer id;
 
     /**
-     * 教师课程id
+     * 评估表id
      */
-    @TableField("teacher_subject_id")
-    private Integer teacherSubjectId;
+    @TableField("evaluate_id")
+    private Integer evaluateId;
 
     /**
-     * 第几次评价
+     * 评价学生id
      */
-    @TableField("time")
-    private Integer time;
+    @TableField("student_id")
+    private Integer studentId;
+
+    /**
+     * 结果（0差，1优）
+     */
+    @TableField("final")
+    private Short final_;
 
     /**
      * 创建时间

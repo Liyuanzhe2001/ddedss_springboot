@@ -32,6 +32,12 @@ public class Lesson implements Serializable {
     private Integer teacherSubjectId;
 
     /**
+     * 班级id
+     */
+    @TableField("class_id")
+    private Integer classId;
+
+    /**
      * 星期几
      */
     @TableField("weekday")
