@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/student")
 public class StudentController extends BaseController {
@@ -25,7 +27,7 @@ public class StudentController extends BaseController {
      * 通过班级id查询班级学生列表
      */
     @GetMapping("/query_student_list_by_class_id/{classId}")
-    public ResultJson<QueryStudentListByClassIdRespDto> queryStudentListByClassId(@PathVariable("classId") Integer classId) {
+    public ResultJson<List<QueryStudentListByClassIdRespDto>> queryStudentListByClassId(@PathVariable("classId") Integer classId) {
         return null;
     }
 

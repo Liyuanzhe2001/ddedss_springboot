@@ -11,23 +11,13 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class QueryStudentListByClassIdRespDto implements Serializable {
+public class GetClassNameByIdRespDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 学生id
+     * 班级名
      */
-    private Integer studentId;
-
-    /**
-     * 姓名
-     */
-    private String studentName;
-
-    /**
-     * 性别
-     */
-    private Short studentSex;
+    private String className;
 
 }

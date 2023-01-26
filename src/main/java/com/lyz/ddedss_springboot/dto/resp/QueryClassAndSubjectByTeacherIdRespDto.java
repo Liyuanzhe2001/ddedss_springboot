@@ -40,4 +40,9 @@ public class QueryClassAndSubjectByTeacherIdRespDto implements Serializable {
      */
     private String subjectName;
 
+    /**
+     * 是否完成（0未完成，1已完成）
+     */
+    private Short haveFinish;
+
 }

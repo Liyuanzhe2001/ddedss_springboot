@@ -11,32 +11,12 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class QueryTeacherListByClassIdRespDto implements Serializable {
+public class GetSubjectNameByIdRespDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 教师id
-     */
-    private Integer teacherId;
-
-    /**
-     * 教师姓名
-     */
-    private String teacherName;
-
-    /**
-     * 教师性别
-     */
-    private Short teacherSex;
-
-    /**
-     * 科目id
-     */
-    private Integer subjectId;
-
-    /**
-     * 科目
+     * 科目名
      */
     private String subjectName;
 

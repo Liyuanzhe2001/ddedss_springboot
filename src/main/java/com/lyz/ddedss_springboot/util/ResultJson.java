@@ -8,9 +8,21 @@ import java.util.Map;
 
 public class ResultJson<T> implements Serializable {
 
+    /**
+     * 状态码
+     */
     private Integer code;
+    /**
+     * 返回提示信息
+     */
     private String msg = "";
+    /**
+     * 返回数据
+     */
     private T data;
+    /**
+     * 总记录数
+     */
     private Integer total = 0;
 
     public ResultJson(Integer code, String msg) {

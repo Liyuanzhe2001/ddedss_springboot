@@ -14,10 +14,10 @@ import java.util.List;
 public class ExamController extends BaseController {
 
     /**
-     *  获取学生考试列表
+     * 获取学生考试列表
      */
-    @GetMapping("/get_exam_list_by_student_id/{studentId}")
-    public ResultJson<List<GetExamListByStudentIdRespDto>> getExamListByStudentId(@PathVariable("studentId") Integer studentId) {
+    @GetMapping("/get_exam_list_by_student_id")
+    public ResultJson<List<GetExamListByStudentIdRespDto>> getExamListByStudentId() {
         return null;
     }
 
