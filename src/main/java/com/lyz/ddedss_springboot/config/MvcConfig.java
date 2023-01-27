@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
-    @Resource
+    @Autowired
     private LoginInterceptor loginInterceptor;
 
     @Override
@@ -21,6 +21,8 @@ public class MvcConfig implements WebMvcConfigurer {
         //excludePathPatterns：不拦截此路径的请求
         registry
                 .addInterceptor(loginInterceptor)
-                .excludePathPatterns("/user/*");
+                .addPathPatterns("/**")
+                .excludePathPatterns("/**");
+//                .excludePathPatterns("/user/login");
     }
 }

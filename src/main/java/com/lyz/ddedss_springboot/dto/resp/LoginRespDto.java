@@ -18,7 +18,12 @@ public class LoginRespDto implements Serializable {
     /**
      * 用户名
      */
-    private String name;
+    private String username;
+
+    /**
+     * 身份
+     */
+    private Short identity;
 
     /**
      * token

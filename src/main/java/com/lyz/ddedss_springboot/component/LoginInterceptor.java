@@ -22,9 +22,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if (StringUtil.isNullOrEmpty((String) request.getSession().getAttribute(FinalData.USERNAME))) {
-            throw new LoginException();
-        }
+
+        System.out.println(request.getServletPath());
+
         String token = request.getHeader("token");
 
         return JWTUtil.verify(token, FinalData.TOKEN_KEY.getBytes());

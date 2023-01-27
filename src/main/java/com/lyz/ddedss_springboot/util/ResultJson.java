@@ -1,9 +1,7 @@
 package com.lyz.ddedss_springboot.util;
 
-import cn.hutool.json.JSONUtil;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ResultJson<T> implements Serializable {
@@ -36,6 +34,13 @@ public class ResultJson<T> implements Serializable {
         this.data = data;
     }
 
+    public ResultJson(Integer code, String msg, T data, Integer total) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
+        this.total = total;
+    }
+
     public Integer getCode() {
         return code;
     }
@@ -52,12 +57,12 @@ public class ResultJson<T> implements Serializable {
         this.msg = msg;
     }
 
-    public void setData(T data) {
-        this.data = data;
-    }
-
     public T getData() {
         return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 
     public Integer getTotal() {

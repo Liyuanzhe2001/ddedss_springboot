@@ -1,5 +1,8 @@
+# 基础配置
 server:
-  port: 8080
+  port: 9090
+
+# mysql，redis，mail配置
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
@@ -9,8 +12,13 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
+  mail:
+    host: smtp.qq.com
+    username: 1732781024@qq.com
+    password: ewbsjajcxptvcaca
 
 
+# mybatis plus 配置
 mybatis-plus:
   global-config:
     db-config:

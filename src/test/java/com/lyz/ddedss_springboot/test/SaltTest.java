@@ -1,6 +1,7 @@
 package com.lyz.ddedss_springboot.test;
 
 import cn.hutool.core.util.HexUtil;
+import com.lyz.ddedss_springboot.util.PasswordUtil;
 import org.junit.jupiter.api.Test;
 
 import java.security.MessageDigest;
@@ -14,10 +15,10 @@ public class SaltTest {
     public void test() throws NoSuchAlgorithmException {
         // 加密(加密(密码) + salt)
         String salt = UUID.randomUUID().toString().replaceAll("-", "");
-        String s1 = md5Hex("123456");
+        String s1 = md5Hex("123123");
         s1 = md5Hex(s1, salt);
 
-        boolean verify = verify(s1, "123456", salt);
+        boolean verify = verify("c92e03402b8c1abeb6815b749065a775", "123123", "b54f1f32ccad4b14b2cb9419a87a4c2f");
 
         System.out.println(salt);
         System.out.println(s1);
@@ -45,6 +46,12 @@ public class SaltTest {
         String s1 = md5Hex(password);
         s1 = md5Hex(s1, salt);
         return s1.equals(realPassword);
+    }
+
+    @Test
+    public void utilTest() throws NoSuchAlgorithmException {
+        boolean check = PasswordUtil.check("c92e03402b8c1abeb6815b749065a775", "123123", "b54f1f32ccad4b14b2cb9419a87a4c2f");
+        System.out.println(check);
     }
 
 }

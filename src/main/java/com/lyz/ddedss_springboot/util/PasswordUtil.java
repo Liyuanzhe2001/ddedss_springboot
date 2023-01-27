@@ -1,5 +1,8 @@
 package com.lyz.ddedss_springboot.util;
 
+import cn.hutool.core.util.HexUtil;
+import sun.security.util.Password;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -20,16 +23,16 @@ public class PasswordUtil {
             }
         }
         byte[] bytes = md5.digest((password).getBytes());
-        return new String(bytes);
+        return new String(HexUtil.encodeHex(bytes));
     }
 
     /**
      * 校验密码
      */
-    public static boolean check(String realPassword, String password, String salt) throws NoSuchAlgorithmException {
+    public static boolean check(String correctPassword, String password, String salt) throws NoSuchAlgorithmException {
         String s1 = encrypt(password);
         s1 = encrypt(s1, salt);
-        return s1.equals(realPassword);
+        return s1.equals(correctPassword);
     }
 
 }

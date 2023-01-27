@@ -31,6 +31,11 @@ public class RegisterReqDto implements Serializable {
     private String username;
 
     /**
+     * 性别（0女，1男）
+     */
+    private Short sex;
+
+    /**
      * 密码
      */
     private String password;
