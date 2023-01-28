@@ -31,9 +31,6 @@ public class ServiceTest {
     @Autowired
     private KnowledgeService knowledgeService;
 
-    @Autowired
-    private KnowledgeMapper knowledgeMapper;
-
     @Test
     public void testServiceMethods() {
         Student student = new Student()

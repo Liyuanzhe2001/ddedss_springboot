@@ -18,6 +18,6 @@ public class GetAvgScoreByExamIdRespDto implements Serializable {
     /**
      * 平均分
      */
-    private Integer avgScore;
+    private Double avgScore;
 
 }

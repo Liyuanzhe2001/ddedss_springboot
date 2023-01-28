@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lyz.ddedss_springboot.mapper.ResultMapper">
+    <select id="getExamIdByStudentId" resultType="java.lang.Integer">
+        select exam_id
+        from ddedss.result
+        where student_id = #{studentId}
+    </select>
+
+    <select id="getSumScore" resultType="java.lang.Integer">
+        select sum(score)
+        from ddedss.result
+        where student_id in
+        <foreach collection="studentIds" index="index" item="studentId" open="(" separator="," close=")">
+            #{studentId}
+        </foreach>
+        and
+        exam_id=#{examId}
+    </select>
 </mapper>
