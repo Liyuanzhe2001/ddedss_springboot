@@ -1,20 +1,20 @@
 package com.lyz.ddedss_springboot.test;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lyz.ddedss_springboot.entity.Knowledge;
 import com.lyz.ddedss_springboot.entity.Student;
-import com.lyz.ddedss_springboot.entity.User;
+import com.lyz.ddedss_springboot.mapper.KnowledgeMapper;
 import com.lyz.ddedss_springboot.mapper.UserMapper;
+import com.lyz.ddedss_springboot.service.KnowledgeService;
 import com.lyz.ddedss_springboot.service.StudentService;
 import com.lyz.ddedss_springboot.service.UserService;
-import com.lyz.ddedss_springboot.util.PasswordUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 @SpringBootTest
 public class ServiceTest {
@@ -27,6 +27,12 @@ public class ServiceTest {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private KnowledgeService knowledgeService;
+
+    @Autowired
+    private KnowledgeMapper knowledgeMapper;
 
     @Test
     public void testServiceMethods() {
@@ -48,6 +54,16 @@ public class ServiceTest {
     public void test_01() throws NoSuchAlgorithmException {
         boolean b = userService.judgeUserPassword(5, "1234");
         System.out.println(b);
+    }
+
+    @Test
+    public void pageTest(){
+        IPage<Knowledge> page = new Page(1, 5);
+        knowledgeService.page(page);
+        System.out.println(page.getTotal());
+
+        page.getRecords().forEach(System.out::println);
+//        knowledgeService.test();
     }
 
 }

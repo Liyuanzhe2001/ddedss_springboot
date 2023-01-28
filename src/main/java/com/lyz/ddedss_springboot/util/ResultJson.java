@@ -21,7 +21,7 @@ public class ResultJson<T> implements Serializable {
     /**
      * 总记录数
      */
-    private Integer total = 0;
+    private Long total = 0L;
 
     public ResultJson(Integer code, String msg) {
         this.code = code;
@@ -34,7 +34,7 @@ public class ResultJson<T> implements Serializable {
         this.data = data;
     }
 
-    public ResultJson(Integer code, String msg, T data, Integer total) {
+    public ResultJson(Integer code, String msg, T data, Long total) {
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -65,11 +65,11 @@ public class ResultJson<T> implements Serializable {
         this.data = data;
     }
 
-    public Integer getTotal() {
+    public Long getTotal() {
         return total;
     }
 
-    public void setTotal(Integer total) {
+    public void setTotal(Long total) {
         this.total = total;
     }
 }
