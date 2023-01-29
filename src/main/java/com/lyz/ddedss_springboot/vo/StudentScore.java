@@ -1,4 +1,4 @@
-package com.lyz.ddedss_springboot.dto.vo;
+package com.lyz.ddedss_springboot.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

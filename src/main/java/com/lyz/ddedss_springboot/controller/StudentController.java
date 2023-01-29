@@ -34,7 +34,6 @@ public class StudentController extends BaseController {
      */
     @GetMapping("/query_class_name")
     public ResultJson<QueryClassNameRespDto> queryClassName() {
-        setRoleId(1);
         Integer roleId = getRoleId();
         Class_ class_ = studentService.getClassName(roleId);
 

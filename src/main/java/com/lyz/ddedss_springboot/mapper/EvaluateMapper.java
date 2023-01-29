@@ -6,4 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface EvaluateMapper extends BaseMapper<Evaluate> {
+
+    public Integer getLatestTime();
+
+
+
 }

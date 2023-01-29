@@ -51,7 +51,7 @@ public class UserController extends BaseController {
      * 登录
      */
     @PostMapping("/login")
-    public ResultJson<LoginRespDto> login(LoginReqDto loginReqDto) throws NoSuchAlgorithmException {
+    public ResultJson<LoginRespDto> login(@RequestBody LoginReqDto loginReqDto) throws NoSuchAlgorithmException {
         Integer number = loginReqDto.getNumber();
         String password = loginReqDto.getPassword();
 
@@ -182,7 +182,7 @@ public class UserController extends BaseController {
      * 忘记密码
      */
     @PostMapping("/forget_password")
-    public ResultJson<Void> forgetPassword(ForgetPasswordReqDto reqDto) throws NoSuchAlgorithmException {
+    public ResultJson<Void> forgetPassword(@RequestBody ForgetPasswordReqDto reqDto) throws NoSuchAlgorithmException {
         // 判断邮箱与学号/工号是否对应
         boolean flag = userService.judgeUserByNumberAndEmail(reqDto.getNumber(), reqDto.getEmail());
         if (!flag) {
@@ -208,7 +208,7 @@ public class UserController extends BaseController {
      * 判断密码是否正确
      */
     @PostMapping("/judge_password")
-    public ResultJson<Void> judgePassword(JudgePasswordReqDto reqDto) throws NoSuchAlgorithmException {
+    public ResultJson<Void> judgePassword(@RequestBody JudgePasswordReqDto reqDto) throws NoSuchAlgorithmException {
         Integer roleId = getRoleId();
         boolean flag = userService.judgeUserPassword(roleId, reqDto.getPassword());
         if (!flag) {
@@ -221,7 +221,7 @@ public class UserController extends BaseController {
      * 修改密码
      */
     @PutMapping("/update_password")
-    public ResultJson<Void> updatePassword(UpdatePasswordReqDto reqDto) throws NoSuchAlgorithmException {
+    public ResultJson<Void> updatePassword(@RequestBody UpdatePasswordReqDto reqDto) throws NoSuchAlgorithmException {
         setRoleId(5);
         Integer roleId = getRoleId();
         boolean flag = userService.modifyPasswordByRoleId(roleId, reqDto.getPassword());

@@ -16,4 +16,11 @@ public class TeacherSubjectServiceImpl extends ServiceImpl<TeacherSubjectMapper,
     @Autowired
     private TeacherSubjectMapper teacherSubjectMapper;
 
+    @Override
+    public Integer getId(Integer teacherId, Integer subjectId) {
+        LambdaQueryWrapper<TeacherSubject> lambdaQueryWrapper = new LambdaQueryWrapper<TeacherSubject>()
+                .eq(TeacherSubject::getTeacherId, teacherId)
+                .eq(TeacherSubject::getSubjectId, subjectId);
+        return teacherSubjectMapper.selectOne(lambdaQueryWrapper).getId();
+    }
 }
