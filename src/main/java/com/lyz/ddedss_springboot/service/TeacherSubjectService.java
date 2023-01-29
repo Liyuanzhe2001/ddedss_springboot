@@ -1,7 +1,9 @@
 package com.lyz.ddedss_springboot.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lyz.ddedss_springboot.dto.resp.QueryClassAndSubjectByTeacherIdRespDto;
 import com.lyz.ddedss_springboot.entity.TeacherSubject;
+import com.lyz.ddedss_springboot.vo.ClassAndSubjectVO;
 
 import java.util.List;
 
@@ -12,4 +14,15 @@ public interface TeacherSubjectService extends IService<TeacherSubject> {
      */
     public Integer getId(Integer teacherId, Integer subjectId);
 
+
+    /**
+     * 通过教师id获取教师科目列表
+     */
+    public List<TeacherSubject> getTeacherSubjects(Integer teacherId);
+
+
+    /**
+     * 通过教师id获取教的班级和科目
+     */
+    public List<ClassAndSubjectVO> getClassAndSubject(Integer teacherId);
 }

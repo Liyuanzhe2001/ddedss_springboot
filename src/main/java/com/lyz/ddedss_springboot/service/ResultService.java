@@ -21,6 +21,16 @@ public interface ResultService extends IService<Result> {
     /**
      * 获取班级考试平均分
      */
-    public Double getAvgScore(Integer studentId,Integer examId);
+    public Double getAvgScore(Integer studentId, Integer examId);
+
+    /**
+     * 检查是否有学生还未打分
+     */
+    public boolean checkNoScore(Integer examId, Integer subjectId, Integer classId);
+
+    /**
+     * 修改学生分数
+     */
+    public void modifyStudentScore(Integer studentId, Integer examId, Integer subjectId, Integer score);
 
 }

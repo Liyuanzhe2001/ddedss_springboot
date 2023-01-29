@@ -1,6 +1,8 @@
 package com.lyz.ddedss_springboot.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyz.ddedss_springboot.entity.Result;
 import com.lyz.ddedss_springboot.mapper.ResultMapper;
@@ -42,5 +44,21 @@ public class ResultServiceImpl extends ServiceImpl<ResultMapper, Result> impleme
         Integer sumScore = resultMapper.getSumScore(ids, examId);
 
         return 1.0 * sumScore / ids.size();
+    }
+
+    @Override
+    public boolean checkNoScore(Integer examId, Integer subjectId, Integer classId) {
+        Integer noScoreStudentNum = resultMapper.getNoScoreStudentNum(examId, subjectId, classId);
+        return noScoreStudentNum == 0;
+    }
+
+    @Override
+    public void modifyStudentScore(Integer studentId, Integer examId, Integer subjectId, Integer score) {
+        LambdaUpdateWrapper<Result> lambdaUpdateWrapper = new LambdaUpdateWrapper<Result>()
+                .eq(Result::getStudentId, studentId)
+                .eq(Result::getExamId, examId)
+                .eq(Result::getSubjectId, subjectId)
+                .set(Result::getScore, score);
+        update(lambdaUpdateWrapper);
     }
 }

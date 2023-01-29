@@ -20,7 +20,7 @@ public class ModifyStudentsScoreReqDto implements Serializable {
     /**
      * 科目名称
      */
-    private String subjectName;
+    private Integer subjectId;
 
     /**
      * 学生分数列表

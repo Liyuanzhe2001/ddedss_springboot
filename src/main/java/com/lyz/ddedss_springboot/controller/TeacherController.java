@@ -5,11 +5,9 @@ import com.lyz.ddedss_springboot.dto.resp.QueryTeacherListByClassIdRespDto;
 import com.lyz.ddedss_springboot.entity.Subject;
 import com.lyz.ddedss_springboot.entity.Teacher;
 import com.lyz.ddedss_springboot.entity.TeacherSubject;
-import com.lyz.ddedss_springboot.service.LessonService;
-import com.lyz.ddedss_springboot.service.SubjectService;
-import com.lyz.ddedss_springboot.service.TeacherService;
-import com.lyz.ddedss_springboot.service.TeacherSubjectService;
+import com.lyz.ddedss_springboot.service.*;
 import com.lyz.ddedss_springboot.util.ResultJson;
+import com.lyz.ddedss_springboot.vo.ClassAndSubjectVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +32,12 @@ public class TeacherController extends BaseController {
 
     @Autowired
     private LessonService lessonService;
+
+    @Autowired
+    private ExamService examService;
+
+    @Autowired
+    private ResultService resultService;
 
     /**
      * 通过班级id查询教师课程列表
@@ -70,7 +74,32 @@ public class TeacherController extends BaseController {
      */
     @GetMapping("/query_class_and_subject_by_teacher_id")
     public ResultJson<List<QueryClassAndSubjectByTeacherIdRespDto>> queryClassAndSubjectByTeacherId() {
-        return null;
+        setRoleId(100);
+        Integer teacherId = getRoleId();
+
+        List<QueryClassAndSubjectByTeacherIdRespDto> respDtos = new ArrayList<>();
+
+        List<ClassAndSubjectVO> classAndSubjectList = teacherSubjectService.getClassAndSubject(teacherId);
+
+        // 获取最新的考试id
+        Integer examId = examService.getLatestId();
+
+        for (ClassAndSubjectVO classAndSubject : classAndSubjectList) {
+            QueryClassAndSubjectByTeacherIdRespDto respDto = new QueryClassAndSubjectByTeacherIdRespDto();
+            respDto.setClassAndSubject(classAndSubject);
+
+            Integer classId = classAndSubject.getClassId();
+            Integer subjectId = classAndSubject.getSubjectId();
+            boolean flag = resultService.checkNoScore(examId, subjectId, classId);
+            if (flag) {
+                respDto.setHaveFinish((short) 1);
+            } else {
+                respDto.setHaveFinish((short) 0);
+            }
+            respDtos.add(respDto);
+        }
+
+        return new ResultJson<>(OK, "查询成功", respDtos);
     }
 
 

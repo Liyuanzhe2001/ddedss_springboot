@@ -20,4 +20,9 @@ public interface ResultMapper extends BaseMapper<Result> {
      */
     public Integer getSumScore(List<Integer> studentIds, Integer examId);
 
+    /**
+     * 通过考试id,科目id,班级id查询班级有多少学生还没打分
+     */
+    public Integer getNoScoreStudentNum(Integer examId,Integer subjectId,Integer classId);
+
 }

@@ -7,4 +7,9 @@ import java.util.List;
 
 public interface ExamService extends IService<Exam> {
 
+    /**
+     * 获取最新的考试id
+     */
+    public Integer getLatestId();
+
 }

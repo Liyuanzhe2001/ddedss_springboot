@@ -3,11 +3,17 @@ package com.lyz.ddedss_springboot.controller;
 import com.lyz.ddedss_springboot.dto.req.ModifyStudentsScoreReqDto;
 import com.lyz.ddedss_springboot.dto.resp.GetAvgScoreByExamIdRespDto;
 import com.lyz.ddedss_springboot.dto.resp.GetResultByExamIdRespDto;
+import com.lyz.ddedss_springboot.dto.resp.HaveNotice;
 import com.lyz.ddedss_springboot.entity.Result;
+import com.lyz.ddedss_springboot.service.ExamService;
 import com.lyz.ddedss_springboot.service.ResultService;
 import com.lyz.ddedss_springboot.service.SubjectService;
 import com.lyz.ddedss_springboot.util.ResultJson;
+import com.lyz.ddedss_springboot.vo.StudentScore;
+import io.netty.util.internal.StringUtil;
+import org.apache.ibatis.transaction.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -22,6 +28,12 @@ public class ResultController extends BaseController {
 
     @Autowired
     private SubjectService subjectService;
+
+    @Autowired
+    private ExamService examService;
+
+    @Autowired
+    private StringRedisTemplate redis;
 
     /**
      * 根据考试id获取用户成绩
@@ -61,17 +73,34 @@ public class ResultController extends BaseController {
      * 是否有成绩需公布通知
      */
     @GetMapping("/have_announce_results_notice")
-    public String haveAnnounceResultsNotice() {
-        return null;
+    public ResultJson<HaveNotice> haveAnnounceResultsNotice() {
+        String notice = redis.opsForValue().get("announceResultsNotice");
+        new HaveNotice();
+        if (StringUtil.isNullOrEmpty(notice)) {
+            return new ResultJson<>(OK, "没有成绩需要公布", new HaveNotice((short) 0));
+        }
+        return new ResultJson<>(OK, "有成绩需要公布", new HaveNotice((short) 1));
     }
 
     /**
      * 修改学生分数
      */
     @PutMapping("/modify_students_score")
-    public ResultJson<Void> modifyStudentsScore(ModifyStudentsScoreReqDto reqDto) {
-        return null;
-    }
+    public ResultJson<Void> modifyStudentsScore(@RequestBody ModifyStudentsScoreReqDto reqDto) {
+        // 获取考试id
+        Integer examId = examService.getLatestId();
 
+        Integer subjectId = reqDto.getSubjectId();
+
+        List<StudentScore> studentScores = reqDto.getStudentScores();
+
+        for (StudentScore studentScore : studentScores) {
+            Integer studentId = studentScore.getStudentId();
+            Integer score = studentScore.getScore();
+            resultService.modifyStudentScore(studentId, examId, subjectId, score);
+        }
+
+        return new ResultJson<>(OK,"修改成功");
+    }
 
 }

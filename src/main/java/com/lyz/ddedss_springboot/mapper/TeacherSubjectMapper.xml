@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lyz.ddedss_springboot.mapper.TeacherSubjectMapper">
+    <select id="getClassAndSubjectByTeacherId" resultType="com.lyz.ddedss_springboot.vo.ClassAndSubjectVO">
+        SELECT c.id          'classId',
+               c.`name`      'className',
+               COUNT(stu.id) 'peopleNum',
+               s.id          'subjectId',
+               s.`name`      'subjectName'
+        FROM ddedss.teacher_subject ts
+                     INNER JOIN ddedss.lesson l ON l.teacher_subject_id = ts.id
+                     INNER JOIN ddedss.class c ON l.class_id = c.id
+                     INNER JOIN ddedss.`subject` s ON s.id = ts.subject_id
+                     LEFT JOIN ddedss.`student` stu ON stu.class_id = c.id
+        WHERE ts.teacher_id = #{teacherId}
+        GROUP BY stu.class_id
+    </select>
 </mapper>

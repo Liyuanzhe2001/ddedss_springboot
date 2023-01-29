@@ -1,5 +1,6 @@
 package com.lyz.ddedss_springboot.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyz.ddedss_springboot.entity.Knowledge;
@@ -14,13 +15,12 @@ public class KnowledgeServiceImpl extends ServiceImpl<KnowledgeMapper, Knowledge
     @Autowired
     private KnowledgeMapper knowledgeMapper;
 
+
     @Override
-    public void test() {
-        Page<Knowledge> page = new Page(2, 5);
-        page = knowledgeMapper.selectPage(page, null);
-        System.out.println(page.getTotal());
-        page.getRecords().forEach(System.out::println);
-        System.out.println(page.getCurrent());
-        System.out.println(page.getSize());
+    public Page<Knowledge> queryKnowledgeList(Page<Knowledge> page, Integer teacherId) {
+        LambdaQueryWrapper<Knowledge> lambdaQueryWrapper = new LambdaQueryWrapper<Knowledge>()
+                .eq(Knowledge::getTeacherId, teacherId);
+        page(page,lambdaQueryWrapper);
+        return knowledgeMapper.selectPage(page, lambdaQueryWrapper);
     }
 }

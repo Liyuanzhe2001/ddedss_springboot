@@ -12,6 +12,7 @@ import com.lyz.ddedss_springboot.service.KnowledgeService;
 import com.lyz.ddedss_springboot.util.ResultJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,7 +49,20 @@ public class KnowledgeController extends BaseController {
      */
     @GetMapping("/query_knowledge_list_by_id")
     public ResultJson<List<QueryKnowledgeListByIdRespDto>> queryKnowledgeListById(PageReqDto pageReqDto) {
-        return null;
+        setRoleId(1);
+        Integer teacherId = getRoleId();
+        Page<Knowledge> page = new Page<>(pageReqDto.getCurrentPage(), pageReqDto.getPageSize());
+        page = knowledgeService.queryKnowledgeList(page, teacherId);
+
+        List<QueryKnowledgeListByIdRespDto> respDtos = new ArrayList<>();
+
+        for (Knowledge knowledge : page.getRecords()) {
+            QueryKnowledgeListByIdRespDto respDto = new QueryKnowledgeListByIdRespDto()
+                    .setKnowledgeId(knowledge.getId())
+                    .setKnowledgeTitle(knowledge.getTitle());
+            respDtos.add(respDto);
+        }
+        return new ResultJson<>(OK, "查询成功", respDtos, page.getTotal());
     }
 
 }

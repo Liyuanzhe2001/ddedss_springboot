@@ -11,12 +11,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/lesson")
 public class LessonController extends BaseController {
 
-    /**
-     * 根据id查询科目名称
-     */
-    @GetMapping("/get_subject_name_by_id/{subjectId}")
-    public ResultJson<GetSubjectNameByIdRespDto> getSubjectNameById(@PathVariable("subjectId") Integer subjectId) {
-        return null;
-    }
-
 }
