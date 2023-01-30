@@ -27,7 +27,7 @@ public class ExamController extends BaseController {
     /**
      * 获取学生考试列表
      */
-    @GetMapping("/get_exam_list_by_student_id")
+    @GetMapping("/getExamListByStudentId")
     public ResultJson<List<GetExamListByStudentIdRespDto>> getExamListByStudentId() {
         Integer roleId = getRoleId();
         // 获取考试id

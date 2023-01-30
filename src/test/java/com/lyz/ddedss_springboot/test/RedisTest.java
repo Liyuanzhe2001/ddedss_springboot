@@ -58,4 +58,10 @@ public class RedisTest {
 
     }
 
+    @Test
+    public void testGetNull(){
+        String b200113 = stringRedisTemplate.opsForValue().get("B200113");
+        System.out.println(b200113);
+    }
+
 }

@@ -42,28 +42,8 @@ public class BaseController {
     @ExceptionHandler({BaseException.class})
     public ResultJson<Void> handleException(Throwable e) {
         ResultJson<Void> result = new ResultJson<>(ERR, "");
-        if (e instanceof NoLoginException) {
-            result.setMsg("用户未登录");
-        } else if (e instanceof NumberOrPasswordException) {
-            result.setMsg("账号或密码错误");
-        } else if (e instanceof FailedSendEmailException) {
-            result.setMsg("发送失败");
-        } else if (e instanceof ClassNotFoundException) {
-            result.setMsg("未找到该班级");
-        } else if (e instanceof CreateStudentException) {
-            result.setMsg("创建学生失败");
-        } else if (e instanceof CreateUserException) {
-            result.setMsg("创建用户失败");
-        } else if (e instanceof ErrorVerificationCodeException) {
-            result.setMsg("验证码错误");
-        } else if (e instanceof ErrorNumberOrEmailException) {
-            result.setMsg("学号/工号或邮箱错误");
-        } else if (e instanceof FailedModifyPasswordException) {
-            result.setMsg("修改密码失败");
-        } else if (e instanceof ErrorPasswordException) {
-            result.setMsg("密码错误");
-        } else {
-            result.setMsg("发生异常:" + e);
+        if(e instanceof BaseException) {
+            result.setMsg(e.getMessage());
         }
         return result;
     }

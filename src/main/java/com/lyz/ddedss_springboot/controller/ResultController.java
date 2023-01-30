@@ -38,7 +38,7 @@ public class ResultController extends BaseController {
     /**
      * 根据考试id获取用户成绩
      */
-    @GetMapping("/get_result_by_exam_id/{examId}")
+    @GetMapping("/getResultByExamId/{examId}")
     public ResultJson<List<GetResultByExamIdRespDto>> getResultByExamId(@PathVariable("examId") Integer examId) {
         Integer roleId = getRoleId();
         List<Result> results = resultService.getResults(examId, roleId);
@@ -58,7 +58,7 @@ public class ResultController extends BaseController {
     /**
      * 根据考试id获取用户班级平均分
      */
-    @GetMapping("/get_avg_score_by_exam_id/{examId}")
+    @GetMapping("/getAvgScoreByExamId/{examId}")
     public ResultJson<GetAvgScoreByExamIdRespDto> getAvgScoreByExamId(@PathVariable("examId") Integer examId) {
         Integer roleId = getRoleId();
 
@@ -72,7 +72,7 @@ public class ResultController extends BaseController {
     /**
      * 是否有成绩需公布通知
      */
-    @GetMapping("/have_announce_results_notice")
+    @GetMapping("/haveAnnounceResultsNotice")
     public ResultJson<HaveNotice> haveAnnounceResultsNotice() {
         String notice = redis.opsForValue().get("announceResultsNotice");
         new HaveNotice();
@@ -85,7 +85,7 @@ public class ResultController extends BaseController {
     /**
      * 修改学生分数
      */
-    @PutMapping("/modify_students_score")
+    @PutMapping("/modifyStudentsScore")
     public ResultJson<Void> modifyStudentsScore(@RequestBody ModifyStudentsScoreReqDto reqDto) {
         // 获取考试id
         Integer examId = examService.getLatestId();

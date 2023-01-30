@@ -11,7 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class ClassAndSubjectVO implements Serializable {
+public class ClassAndSubject implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

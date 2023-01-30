@@ -20,7 +20,7 @@ public class SubjectController extends BaseController {
     /**
      * 根据id查询科目名称
      */
-    @GetMapping("/get_subject_name_by_id/{subjectId}")
+    @GetMapping("/getSubjectNameById/{subjectId}")
     public ResultJson<GetSubjectNameByIdRespDto> getSubjectNameById(@PathVariable("subjectId") Integer subjectId) {
         Subject subject = subjectService.getById(subjectId);
 

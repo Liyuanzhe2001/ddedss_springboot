@@ -7,7 +7,7 @@ import com.lyz.ddedss_springboot.entity.Teacher;
 import com.lyz.ddedss_springboot.entity.TeacherSubject;
 import com.lyz.ddedss_springboot.service.*;
 import com.lyz.ddedss_springboot.util.ResultJson;
-import com.lyz.ddedss_springboot.vo.ClassAndSubjectVO;
+import com.lyz.ddedss_springboot.vo.ClassAndSubject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +42,7 @@ public class TeacherController extends BaseController {
     /**
      * 通过班级id查询教师课程列表
      */
-    @GetMapping("/query_teacher_list_by_class_id/{classId}")
+    @GetMapping("/queryTeacherListByClassId/{classId}")
     public ResultJson<List<QueryTeacherListByClassIdRespDto>> queryTeacherListByClassId(@PathVariable("classId") Integer classId) {
         // 通过 班级id 拿到 List<教师科目id>
         List<Integer> teacherSubjectIds = lessonService.getTeacherSubjectId(classId);
@@ -72,19 +72,19 @@ public class TeacherController extends BaseController {
     /**
      * 通过教师id获取教的班级和科目
      */
-    @GetMapping("/query_class_and_subject_by_teacher_id")
+    @GetMapping("/queryClassAndSubjectByTeacherId")
     public ResultJson<List<QueryClassAndSubjectByTeacherIdRespDto>> queryClassAndSubjectByTeacherId() {
         setRoleId(100);
         Integer teacherId = getRoleId();
 
         List<QueryClassAndSubjectByTeacherIdRespDto> respDtos = new ArrayList<>();
 
-        List<ClassAndSubjectVO> classAndSubjectList = teacherSubjectService.getClassAndSubject(teacherId);
+        List<ClassAndSubject> classAndSubjectList = teacherSubjectService.getClassAndSubject(teacherId);
 
         // 获取最新的考试id
         Integer examId = examService.getLatestId();
 
-        for (ClassAndSubjectVO classAndSubject : classAndSubjectList) {
+        for (ClassAndSubject classAndSubject : classAndSubjectList) {
             QueryClassAndSubjectByTeacherIdRespDto respDto = new QueryClassAndSubjectByTeacherIdRespDto();
             respDto.setClassAndSubject(classAndSubject);
 

@@ -1,20 +1,15 @@
 package com.lyz.ddedss_springboot.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyz.ddedss_springboot.entity.User;
-import com.lyz.ddedss_springboot.exception.NumberOrPasswordException;
 import com.lyz.ddedss_springboot.mapper.UserMapper;
 import com.lyz.ddedss_springboot.service.UserService;
 import com.lyz.ddedss_springboot.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.handler.UserRoleAuthorizationInterceptor;
 
-import javax.swing.text.PasswordView;
 import java.security.NoSuchAlgorithmException;
 
 @Service
@@ -63,7 +58,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public boolean judgeUserPassword(Integer roleId, String password) throws NoSuchAlgorithmException {
-        // 通过roleid 获取 盐值
+        // 通过roleId 获取 盐值
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>()
                 .select(User::getSalt, User::getPassword)
                 .eq(User::getRoleId, roleId);

@@ -28,7 +28,7 @@ public class TeacherSubjectController extends BaseController {
     /**
      * 查询教师科目熟悉程度
      */
-    @GetMapping("/query_teacher_subject_level")
+    @GetMapping("/queryTeacherSubjectLevel")
     public ResultJson<List<QueryTeacherSubjectLevelRespDto>> queryTeacherSubjectLevel() {
         setRoleId(1);
         Integer teacherId = getRoleId();
@@ -48,7 +48,7 @@ public class TeacherSubjectController extends BaseController {
     /**
      * 修改教师科目熟悉程度
      */
-    @PutMapping("/modify_teacher_subject_level")
+    @PutMapping("/modifyTeacherSubjectLevel")
     public ResultJson<Void> modifyTeacherSubjectLevel(@RequestBody ModifyTeacherSubjectLevelReqDto reqDto) {
         setRoleId(1);
         Integer teacherId = getRoleId();

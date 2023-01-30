@@ -29,7 +29,7 @@ public class KnowledgeController extends BaseController {
     /**
      * 查询知识列表
      */
-    @GetMapping("/query_knowledge_list")
+    @GetMapping("/queryKnowledgeList")
     public ResultJson<List<QueryKnowledgeListRespDto>> queryKnowledgeList(PageReqDto pageReqDto) {
         IPage<Knowledge> page = new Page<>(pageReqDto.getCurrentPage(), pageReqDto.getPageSize());
         knowledgeService.page(page);
@@ -47,7 +47,7 @@ public class KnowledgeController extends BaseController {
     /**
      * 根据教师id获取发布的知识
      */
-    @GetMapping("/query_knowledge_list_by_id")
+    @GetMapping("/queryKnowledgeListById")
     public ResultJson<List<QueryKnowledgeListByIdRespDto>> queryKnowledgeListById(PageReqDto pageReqDto) {
         setRoleId(1);
         Integer teacherId = getRoleId();

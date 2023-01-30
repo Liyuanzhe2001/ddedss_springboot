@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/evaluate_final")
+@RequestMapping("/evaluateFinal")
 public class EvaluateFinalController extends BaseController {
 
     @Autowired
@@ -34,12 +34,11 @@ public class EvaluateFinalController extends BaseController {
     /**
      * 给教师的课程评价
      */
-    @PostMapping("/grade_teacher")
+    @PostMapping("/gradeTeacher")
     public ResultJson<Void> gradeTeacher(@RequestBody GradeTeacherReqDto reqDtos) {
         // 获得evaluate最新time
         Integer latestTime = evaluateService.getLatestTime();
 
-        setRoleId(10);
         Integer studentId = getRoleId();
         List<GradeTeacher> gradeTeachers = reqDtos.getGradeTeachers();
 

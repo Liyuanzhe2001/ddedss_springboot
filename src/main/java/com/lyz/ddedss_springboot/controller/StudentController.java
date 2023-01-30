@@ -32,7 +32,7 @@ public class StudentController extends BaseController {
     /**
      * 查询班级名
      */
-    @GetMapping("/query_class_name")
+    @GetMapping("/queryClassName")
     public ResultJson<QueryClassNameRespDto> queryClassName() {
         Integer roleId = getRoleId();
         Class_ class_ = studentService.getClassName(roleId);
@@ -47,7 +47,7 @@ public class StudentController extends BaseController {
     /**
      * 通过班级id查询班级学生列表
      */
-    @GetMapping("/query_student_list_by_class_id/{classId}")
+    @GetMapping("/queryStudentListByClassId/{classId}")
     public ResultJson<List<QueryStudentListByClassIdRespDto>> queryStudentListByClassId(@PathVariable("classId") Integer classId) {
         List<Student> students = studentService.getStudents(classId);
 
@@ -68,7 +68,7 @@ public class StudentController extends BaseController {
     /**
      * 是否有课程评价通知
      */
-    @GetMapping("/have_evaluate_course_notice")
+    @GetMapping("/haveEvaluateCourseNotice")
     public ResultJson<HaveNotice> haveEvaluateCourseNotice() {
         setRoleId(10);
         Integer roleId = getRoleId();

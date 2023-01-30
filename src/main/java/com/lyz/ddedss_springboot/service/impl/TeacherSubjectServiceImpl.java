@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyz.ddedss_springboot.entity.TeacherSubject;
 import com.lyz.ddedss_springboot.mapper.TeacherSubjectMapper;
 import com.lyz.ddedss_springboot.service.TeacherSubjectService;
-import com.lyz.ddedss_springboot.vo.ClassAndSubjectVO;
+import com.lyz.ddedss_springboot.vo.ClassAndSubject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,7 @@ public class TeacherSubjectServiceImpl extends ServiceImpl<TeacherSubjectMapper,
     }
 
     @Override
-    public List<ClassAndSubjectVO> getClassAndSubject(Integer teacherId) {
+    public List<ClassAndSubject> getClassAndSubject(Integer teacherId) {
         return teacherSubjectMapper.getClassAndSubjectByTeacherId(teacherId);
     }
 }
