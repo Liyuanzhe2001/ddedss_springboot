@@ -2,4 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lyz.ddedss_springboot.mapper.UserMapper">
+    <select id="queryAllUserNum" resultType="java.lang.Long">
+        select count(*)
+        from ddedss.`user`
+        where number like "%"#{like}"%"
+        and identity != 3
+        and is_deleted = 0
+          or role_id in (SELECT id FROM ddedss.student where name like "%"#{like}"%")
+          and identity != 3
+          and is_deleted = 0
+           or role_id in (select id from ddedss.teacher where name like "%"#{like}"%")
+          and identity != 3
+          and is_deleted = 0
+    </select>
+
+    <select id="queryAllUserLike" resultType="com.lyz.ddedss_springboot.entity.User">
+        select *
+        from ddedss.`user`
+        where number like "%"#{like}"%"
+            and identity != 3
+            and is_deleted = 0
+            or role_id in (SELECT id FROM ddedss.student where name like "%"#{like}"%")
+            and identity != 3
+            and is_deleted = 0
+            or role_id in (select id from ddedss.teacher where name like "%"#{like}"%")
+            and identity != 3
+            and is_deleted = 0
+        limit #{pageNo},#{pageSize}
+    </select>
 </mapper>

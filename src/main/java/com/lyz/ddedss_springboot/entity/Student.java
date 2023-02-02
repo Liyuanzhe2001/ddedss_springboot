@@ -58,7 +58,7 @@ public class Student implements Serializable {
     /**
      * 是否被删除
      */
-    @TableLogic("is_deleted")
+    @TableLogic
     private Short isDeleted;
 
 }

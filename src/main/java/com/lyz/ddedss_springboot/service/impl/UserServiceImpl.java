@@ -2,8 +2,10 @@ package com.lyz.ddedss_springboot.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyz.ddedss_springboot.entity.User;
+import com.lyz.ddedss_springboot.exception.ErrorNumberOrPasswordException;
 import com.lyz.ddedss_springboot.mapper.UserMapper;
 import com.lyz.ddedss_springboot.service.UserService;
 import com.lyz.ddedss_springboot.util.PasswordUtil;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
@@ -84,5 +87,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return update(set);
     }
 
+    @Override
+    public User getAdminByNumber(Integer number) {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>()
+                .eq(User::getNumber, number)
+                .eq(User::getIdentity, 3);
+        List<User> users = userMapper.selectList(lambdaQueryWrapper);
+        if (users.size() == 0) {
+            throw new ErrorNumberOrPasswordException("账号或密码错误");
+        }
+        return users.get(0);
+    }
 
+    @Override
+    public Page<User> queryAllUserLike(String like, Page<User> page) {
+        Long pageNo = (page.getCurrent() - 1) * page.getSize();
+        // 提前拼接百分号，防止sql注入
+//        like = "%" + like + "%";
+        Long total = userMapper.queryAllUserNum(like);
+        List<User> users = userMapper.queryAllUserLike(like, pageNo, page.getSize());
+        page.setTotal(total);
+        page.setRecords(users);
+        return page;
+    }
 }

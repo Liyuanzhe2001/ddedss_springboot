@@ -30,9 +30,8 @@ public class PasswordUtil {
      * 校验密码
      */
     public static boolean check(String correctPassword, String password, String salt) throws NoSuchAlgorithmException {
-        String s1 = encrypt(password);
-        s1 = encrypt(s1, salt);
-        return s1.equals(correctPassword);
+        String s = encrypt(encrypt(password), salt);
+        return s.equals(correctPassword);
     }
 
 }

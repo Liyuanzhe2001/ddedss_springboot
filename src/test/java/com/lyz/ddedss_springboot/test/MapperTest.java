@@ -56,4 +56,11 @@ public class MapperTest {
         System.out.println(subject.getId());
     }
 
+    @Test
+    public void selectAllUser(){
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        List<User> users = userMapper.selectList(lambdaQueryWrapper);
+        users.forEach(System.out::println);
+    }
+
 }

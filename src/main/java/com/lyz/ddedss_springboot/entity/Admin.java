@@ -14,8 +14,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@TableName("administrator")
-public class Administrator implements Serializable {
+@TableName("admin")
+public class Admin implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,10 +26,10 @@ public class Administrator implements Serializable {
     private Integer id;
 
     /**
-     * 姓名
+     * 用户id
      */
-    @TableField("name")
-    private String name;
+    @TableField("user_id")
+    private String userId;
 
     /**
      * 创建时间
@@ -46,7 +46,7 @@ public class Administrator implements Serializable {
     /**
      * 是否被删除
      */
-    @TableLogic("is_deleted")
+    @TableLogic
     private Short isDeleted;
 
 }

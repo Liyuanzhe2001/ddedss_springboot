@@ -65,19 +65,19 @@ public class User implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(value = "create_time",fill= FieldFill.INSERT)
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     /**
      * 修改时间
      */
-    @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
     /**
      * 是否被删除
      */
-    @TableLogic("is_deleted")
+    @TableLogic
     private Short isDeleted;
 
 

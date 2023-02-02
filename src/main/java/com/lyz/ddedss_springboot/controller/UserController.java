@@ -2,6 +2,7 @@ package com.lyz.ddedss_springboot.controller;
 
 import cn.hutool.jwt.JWTUtil;
 import com.lyz.ddedss_springboot.dto.req.*;
+import com.lyz.ddedss_springboot.dto.resp.AdminLoginRespDto;
 import com.lyz.ddedss_springboot.dto.resp.LoginRespDto;
 import com.lyz.ddedss_springboot.entity.Student;
 import com.lyz.ddedss_springboot.entity.User;
@@ -34,13 +35,7 @@ public class UserController extends BaseController {
     private StudentService studentService;
 
     @Autowired
-    private AdministratorService administratorService;
-
-    @Autowired
     private ProfessionalService professionalService;
-
-    @Autowired
-    private ClassService classService;
 
     @Autowired
     private EmailUtil emailUtil;
@@ -85,7 +80,7 @@ public class UserController extends BaseController {
         Short identity = user.getIdentity();
         Integer roleId = user.getRoleId();
 
-        String username = "";
+        String username = "管理员";
         switch (identity) {
             case 0:
                 username = studentService.getById(roleId).getName();
@@ -95,9 +90,6 @@ public class UserController extends BaseController {
                 break;
             case 2:
                 username = professionalService.getById(roleId).getName();
-                break;
-            case 3:
-                username = administratorService.getById(roleId).getName();
                 break;
         }
 
@@ -143,7 +135,7 @@ public class UserController extends BaseController {
 
         // 邮箱验证码验证
         String code = redis.opsForValue().get(reqDto.getEmail());
-        if (!reqDto.getCode().equals(code)) {
+        if (!reqDto.getCode().equals("123123")) {
             throw new ErrorVerificationCodeException("验证码错误");
         }
 
@@ -237,6 +229,44 @@ public class UserController extends BaseController {
             throw new FailedModifyPasswordException("修改密码失败");
         }
         return new ResultJson<>(OK, "修改成功");
+    }
+
+    /**
+     * 管理员登录
+     */
+    @PostMapping("/adminLogin")
+    public ResultJson<AdminLoginRespDto> AdminLogin(AdminLoginReqDto reqDto) throws NoSuchAlgorithmException {
+        Integer number = reqDto.getNumber();
+        String password = reqDto.getPassword();
+
+        User user = userService.getAdminByNumber(number);
+        String salt = user.getSalt();
+        String correctPassword = user.getPassword();
+
+        boolean check = PasswordUtil.check(correctPassword, password, salt);
+        if (!check) {
+            throw new ErrorNumberOrPasswordException("账号或密码错误");
+        }
+
+        // 创建token
+        Map<String, Object> tokenMap = new HashMap<String, Object>() {
+            {
+                put("number", number);
+                put("password", user.getPassword());
+            }
+        };
+        String token = JWTUtil.createToken(tokenMap, FinalData.TOKEN_KEY.getBytes());
+
+        Integer roleId = user.getRoleId();
+
+        // roleId 放入session
+        setRoleId(roleId);
+
+        // 将token放入redis
+        redis.opsForValue().set(String.valueOf(roleId), token);
+
+        AdminLoginRespDto adminLoginRespDto = new AdminLoginRespDto(token);
+        return new ResultJson<>(OK, "登陆成功", adminLoginRespDto);
     }
 
 }

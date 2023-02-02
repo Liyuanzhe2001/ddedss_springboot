@@ -8,4 +8,9 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
+
+    public Long queryAllUserNum(String like);
+
+    public List<User> queryAllUserLike(String like, Long pageNo, Long pageSize);
+
 }
