@@ -1,6 +1,7 @@
 package com.lyz.ddedss_springboot.controller;
 
 import com.lyz.ddedss_springboot.dto.req.ModifyTeacherSubjectLevelReqDto;
+import com.lyz.ddedss_springboot.dto.resp.GetTeachersBySubjectIdRespDto;
 import com.lyz.ddedss_springboot.dto.resp.QueryTeacherSubjectLevelRespDto;
 import com.lyz.ddedss_springboot.entity.Subject;
 import com.lyz.ddedss_springboot.entity.TeacherSubject;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/teacher_subject")
+@RequestMapping("/teacherSubject")
 public class TeacherSubjectController extends BaseController {
 
     @Autowired
@@ -24,6 +25,9 @@ public class TeacherSubjectController extends BaseController {
 
     @Autowired
     private SubjectService subjectService;
+
+    @Autowired
+    private TeacherService teacherService;
 
     /**
      * 查询教师科目熟悉程度
@@ -85,5 +89,19 @@ public class TeacherSubjectController extends BaseController {
         return new ResultJson<>(OK, "修改成功");
     }
 
+    @GetMapping("/getTeachersBySubjectId/{subjectId}")
+    public ResultJson<List<GetTeachersBySubjectIdRespDto>> getTeachersBySubjectId(@PathVariable("subjectId") Integer subjectId) {
+        List<TeacherSubject> teacherSubjectList = teacherSubjectService.getTeachersBySubjectId(subjectId);
+
+        List<GetTeachersBySubjectIdRespDto> respDtos = new ArrayList<>();
+        for (TeacherSubject teacherSubject : teacherSubjectList) {
+            GetTeachersBySubjectIdRespDto respDto = new GetTeachersBySubjectIdRespDto();
+            String name = teacherService.getById(teacherSubject.getTeacherId()).getName();
+            respDto.setTeacherId(teacherSubject.getTeacherId())
+                    .setTeacherName(name);
+            respDtos.add(respDto);
+        }
+        return new ResultJson<>(OK, "查询成功", respDtos);
+    }
 
 }

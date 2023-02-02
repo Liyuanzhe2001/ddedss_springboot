@@ -103,8 +103,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Page<User> queryAllUserLike(String like, Page<User> page) {
         Long pageNo = (page.getCurrent() - 1) * page.getSize();
-        // 提前拼接百分号，防止sql注入
-//        like = "%" + like + "%";
         Long total = userMapper.queryAllUserNum(like);
         List<User> users = userMapper.queryAllUserLike(like, pageNo, page.getSize());
         page.setTotal(total);

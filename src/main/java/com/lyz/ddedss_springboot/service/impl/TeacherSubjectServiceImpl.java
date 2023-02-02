@@ -1,6 +1,7 @@
 package com.lyz.ddedss_springboot.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyz.ddedss_springboot.entity.TeacherSubject;
 import com.lyz.ddedss_springboot.mapper.TeacherSubjectMapper;
@@ -35,5 +36,21 @@ public class TeacherSubjectServiceImpl extends ServiceImpl<TeacherSubjectMapper,
     @Override
     public List<ClassAndSubject> getClassAndSubject(Integer teacherId) {
         return teacherSubjectMapper.getClassAndSubjectByTeacherId(teacherId);
+    }
+
+    @Override
+    public List<TeacherSubject> getTeachersBySubjectId(Integer subjectId) {
+        return teacherSubjectMapper.getTeachersBySubjectId(subjectId);
+    }
+
+    @Override
+    public Page<TeacherSubject> getListLikeTeacherName(String likeInputValue, Page<TeacherSubject> page) {
+        Long pageSize =  page.getSize();
+        Long pageNo = (page.getCurrent() - 1) * page.getSize();
+        Long total = teacherSubjectMapper.getCountLikeTeacherName(likeInputValue);
+        List<TeacherSubject> teacherSubjectList = teacherSubjectMapper.getListLikeTeacherName(likeInputValue, pageNo, pageSize);
+        page.setTotal(total)
+                .setRecords(teacherSubjectList);
+        return page;
     }
 }

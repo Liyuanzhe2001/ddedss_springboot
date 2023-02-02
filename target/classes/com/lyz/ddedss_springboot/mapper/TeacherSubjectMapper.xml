@@ -15,4 +15,27 @@
         WHERE ts.teacher_id = #{teacherId}
         GROUP BY stu.class_id
     </select>
+
+    <select id="getTeachersBySubjectId" resultType="com.lyz.ddedss_springboot.entity.TeacherSubject">
+        SELECT ts.teacher_id, ts.subject_id
+        FROM ddedss.lesson l
+                     INNER JOIN ddedss.teacher_subject ts ON l.teacher_subject_id = ts.id
+        GROUP BY l.teacher_subject_id
+        HAVING ts.subject_id = #{subjectId}
+        ORDER BY COUNT(l.id),
+                 ts.`level` DESC
+    </select>
+
+    <select id="getCountLikeTeacherName" resultType="java.lang.Long">
+        select count(*)
+        from ddedss.teacher_subject
+        where teacher_id in (select id from ddedss.teacher where name like "%"#{likeInputValue}"%")
+    </select>
+
+    <select id="getListLikeTeacherName" resultType="com.lyz.ddedss_springboot.entity.TeacherSubject">
+        select *
+        from ddedss.teacher_subject
+        where teacher_id in (select id from ddedss.teacher where name like "%"#{likeInputValue}"%")
+        limit #{pageNo},#{pageSize}
+    </select>
 </mapper>

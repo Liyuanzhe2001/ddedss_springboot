@@ -9,6 +9,8 @@ import com.lyz.ddedss_springboot.service.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class_> implements ClassService {
 
@@ -25,5 +27,10 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class_> implement
             throw new ClassNotFoundException();
         }
         return class_.getId();
+    }
+
+    @Override
+    public List<Class_> getAllClassList() {
+        return classMapper.selectList(new LambdaQueryWrapper<Class_>());
     }
 }

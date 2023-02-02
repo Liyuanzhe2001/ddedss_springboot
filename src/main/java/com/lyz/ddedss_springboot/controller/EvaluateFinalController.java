@@ -1,19 +1,18 @@
 package com.lyz.ddedss_springboot.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lyz.ddedss_springboot.dto.req.GetEvaluationByTeacherNameReqDto;
 import com.lyz.ddedss_springboot.dto.req.GradeTeacherReqDto;
+import com.lyz.ddedss_springboot.dto.resp.GetEvaluationByTeacherNameRespDto;
 import com.lyz.ddedss_springboot.entity.Evaluate;
 import com.lyz.ddedss_springboot.entity.EvaluateFinal;
-import com.lyz.ddedss_springboot.service.EvaluateFinalService;
-import com.lyz.ddedss_springboot.service.EvaluateService;
-import com.lyz.ddedss_springboot.service.TeacherSubjectService;
+import com.lyz.ddedss_springboot.entity.TeacherSubject;
+import com.lyz.ddedss_springboot.service.*;
 import com.lyz.ddedss_springboot.util.ResultJson;
 import com.lyz.ddedss_springboot.vo.GradeTeacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +29,12 @@ public class EvaluateFinalController extends BaseController {
 
     @Autowired
     private EvaluateFinalService evaluateFinalService;
+
+    @Autowired
+    private SubjectService subjectService;
+
+    @Autowired
+    private TeacherService teacherService;
 
     /**
      * 给教师的课程评价
@@ -62,4 +67,44 @@ public class EvaluateFinalController extends BaseController {
         return new ResultJson<>(OK, "评价成功");
     }
 
+    @GetMapping("/getEvaluationByTeacherName")
+    public ResultJson<List<GetEvaluationByTeacherNameRespDto>> getEvaluationByTeacherName(GetEvaluationByTeacherNameReqDto reqDto) {
+        String likeInputValue = reqDto.getLikeInputValue();
+        // 获取teacher_subject
+        Page<TeacherSubject> page = new Page<>(reqDto.getCurrentPage(), reqDto.getPageSize());
+        page = teacherSubjectService.getListLikeTeacherName(likeInputValue, page);
+
+        List<GetEvaluationByTeacherNameRespDto> respDtos = new ArrayList<>();
+
+        for (TeacherSubject teacherSubject : page.getRecords()) {
+            GetEvaluationByTeacherNameRespDto respDto = new GetEvaluationByTeacherNameRespDto();
+            // 根据teacherId获取teacherName
+            String teacherName = teacherService.getById(teacherSubject.getTeacherId()).getName();
+            // 根据subjectId获取subjectName
+            String subjectName = subjectService.getById(teacherSubject.getSubjectId()).getName();
+            // 根据teacher_subject_id获取评价ids
+            List<Integer> ids = evaluateService.getIds(teacherSubject.getId());
+            // 根据evaluate ids 获取这几评价的结果总和
+            // 判断 evaluate 有没有好评
+            boolean haveGood = evaluateFinalService.haveGood(ids);
+            // 判断 evaluate 中有没有差评
+            boolean haveBad = evaluateFinalService.haveBad(ids);
+            List<Integer> result = evaluateFinalService.getResult(ids);
+
+            respDto.setTeacherName(teacherName)
+                    .setSubjectName(subjectName);
+            if (haveBad && haveGood) {
+                respDto.setGoodNum(result.get(0))
+                        .setBadNum(result.get(1));
+            } else if (haveBad) {
+                respDto.setGoodNum(0)
+                        .setBadNum(result.get(0));
+            } else if (haveGood) {
+                respDto.setGoodNum(result.get(0))
+                        .setBadNum(0);
+            }
+            respDtos.add(respDto);
+        }
+        return new ResultJson<>(OK, "查询成功", respDtos, page.getTotal());
+    }
 }

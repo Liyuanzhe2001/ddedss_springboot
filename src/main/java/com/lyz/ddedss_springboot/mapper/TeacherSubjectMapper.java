@@ -15,4 +15,21 @@ public interface TeacherSubjectMapper extends BaseMapper<TeacherSubject> {
      */
     public List<ClassAndSubject> getClassAndSubjectByTeacherId(Integer teacherId);
 
+    /**
+     * 根据课程id查询教师
+     * 课程安排较少的有限
+     * 课程安排数量相同，熟练程度高优先
+     */
+    public List<TeacherSubject> getTeachersBySubjectId(Integer subjectId);
+
+    /**
+     * 根据 教师名 模糊查询 条数
+     */
+    public Long getCountLikeTeacherName(String likeInputValue);
+
+    /**
+     * 根据 教师名 模糊查询
+     */
+    public List<TeacherSubject> getListLikeTeacherName(String likeInputValue, Long pageNo, Long pageSize);
+
 }

@@ -21,4 +21,12 @@ public class LessonServiceImpl extends ServiceImpl<LessonMapper, Lesson> impleme
     public List<Integer> getTeacherSubjectId(Integer classId) {
         return lessonMapper.getTeacherSubjectIdByClassId(classId);
     }
+
+    @Override
+    public List<Lesson> getLessonList(Integer classId) {
+        LambdaQueryWrapper<Lesson> lambdaQueryWrapper = new LambdaQueryWrapper<Lesson>()
+                .select(Lesson::getWeekday, Lesson::getSection)
+                .eq(Lesson::getClassId, classId);
+        return lessonMapper.selectList(lambdaQueryWrapper);
+    }
 }

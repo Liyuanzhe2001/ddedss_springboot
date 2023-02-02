@@ -24,10 +24,15 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
         List<Subject> subjectList = subjectMapper.selectList(lambdaQueryWrapper);
 
         // 如果不存在 返回-1
-        if(subjectList.size() == 0){
+        if (subjectList.size() == 0) {
             return -1;
         }
 
         return subjectList.get(0).getId();
+    }
+
+    @Override
+    public List<Subject> getAllSubjectList() {
+        return subjectMapper.selectList(new LambdaQueryWrapper<Subject>());
     }
 }
