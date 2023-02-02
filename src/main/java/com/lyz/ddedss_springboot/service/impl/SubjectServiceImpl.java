@@ -8,6 +8,8 @@ import com.lyz.ddedss_springboot.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> implements SubjectService {
 
@@ -19,12 +21,13 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
         LambdaQueryWrapper<Subject> lambdaQueryWrapper = new LambdaQueryWrapper<Subject>()
                 .select(Subject::getId)
                 .eq(Subject::getName, subjectName);
-        Subject subject = subjectMapper.selectOne(lambdaQueryWrapper);
+        List<Subject> subjectList = subjectMapper.selectList(lambdaQueryWrapper);
 
         // 如果不存在 返回-1
-        if(subject == null){
+        if(subjectList.size() == 0){
             return -1;
         }
-        return subject.getId();
+
+        return subjectList.get(0).getId();
     }
 }

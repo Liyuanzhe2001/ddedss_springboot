@@ -46,4 +46,9 @@ public interface UserService extends IService<User> {
      */
     public Page<User> queryAllUserLike(String like, Page<User> page);
 
+    /**
+     * 查询非管理员用户
+     */
+    public User getNormalUser(Integer userId);
+
 }

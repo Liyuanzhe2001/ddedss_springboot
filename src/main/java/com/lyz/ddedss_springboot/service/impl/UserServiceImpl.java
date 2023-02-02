@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyz.ddedss_springboot.entity.User;
 import com.lyz.ddedss_springboot.exception.ErrorNumberOrPasswordException;
+import com.lyz.ddedss_springboot.exception.UserNotFoundExecption;
 import com.lyz.ddedss_springboot.mapper.UserMapper;
 import com.lyz.ddedss_springboot.service.UserService;
 import com.lyz.ddedss_springboot.util.PasswordUtil;
@@ -109,5 +110,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         page.setTotal(total);
         page.setRecords(users);
         return page;
+    }
+
+    @Override
+    public User getNormalUser(Integer userId) {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>()
+                .ne(User::getIdentity, 3)
+                .eq(User::getId, userId);
+        List<User> users = userMapper.selectList(lambdaQueryWrapper);
+        if(users.size() == 0) {
+            throw new UserNotFoundExecption("未找到该用户");
+        }
+        return users.get(0);
     }
 }

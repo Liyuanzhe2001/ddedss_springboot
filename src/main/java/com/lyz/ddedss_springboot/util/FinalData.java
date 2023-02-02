@@ -6,6 +6,4 @@ public class FinalData {
 
     public static final String TOKEN_KEY = UUID.randomUUID().toString().replaceAll("-", "");
 
-    public static final String USERNAME = "username";
-
 }

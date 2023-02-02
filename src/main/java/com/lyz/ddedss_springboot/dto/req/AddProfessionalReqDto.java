@@ -1,4 +1,4 @@
-package com.lyz.ddedss_springboot.vo;
+package com.lyz.ddedss_springboot.dto.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,18 +11,23 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class SubjectLevel implements Serializable {
+public class AddProfessionalReqDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 科目名
+     * 工号
      */
-    private String subjectName;
+    private Integer number;
 
     /**
-     * 熟悉度
+     * 姓名
      */
-    private Short level;
+    private String name;
+
+    /**
+     * 邮箱
+     */
+    private String email;
 
 }
