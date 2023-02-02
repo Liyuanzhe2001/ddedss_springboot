@@ -3,6 +3,7 @@ package com.lyz.ddedss_springboot.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lyz.ddedss_springboot.entity.Exam;
 import com.lyz.ddedss_springboot.entity.Result;
+import com.lyz.ddedss_springboot.vo.ExaminationResults;
 
 import java.util.List;
 
@@ -17,6 +18,11 @@ public interface ResultService extends IService<Result> {
      * 获取学生成绩
      */
     public List<Result> getResults(Integer examId, Integer studentId);
+
+    /**
+     * 获取学生成绩情况List
+     */
+    public List<ExaminationResults> getExaminationResults(List<Integer> studentIds);
 
     /**
      * 获取班级考试平均分

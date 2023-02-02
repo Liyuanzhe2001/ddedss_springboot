@@ -8,6 +8,7 @@ import com.lyz.ddedss_springboot.entity.Result;
 import com.lyz.ddedss_springboot.mapper.ResultMapper;
 import com.lyz.ddedss_springboot.mapper.StudentMapper;
 import com.lyz.ddedss_springboot.service.ResultService;
+import com.lyz.ddedss_springboot.vo.ExaminationResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,11 @@ public class ResultServiceImpl extends ServiceImpl<ResultMapper, Result> impleme
                 .eq(Result::getExamId, examId)
                 .eq(Result::getStudentId, studentId);
         return resultMapper.selectList(lambdaQueryWrapper);
+    }
+
+    @Override
+    public List<ExaminationResults> getExaminationResults(List<Integer> studentIds) {
+        return resultMapper.getExaminationResults(studentIds);
     }
 
     @Override

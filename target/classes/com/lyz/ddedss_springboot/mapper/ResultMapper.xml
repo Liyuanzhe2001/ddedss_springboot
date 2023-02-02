@@ -28,4 +28,22 @@
                              FROM ddedss.student
                              WHERE class_id = #{classId})
     </select>
+
+    <select id="getExaminationResults" resultType="com.lyz.ddedss_springboot.vo.ExaminationResults">
+        SELECT
+        subject.`name` 'subjectName',
+        sum(if( score >= 80 AND 100 >= score, 1, 0 )) 'good',
+        sum(if( score >= 60 AND 80 > score, 1, 0 )) 'mid',
+        sum(if( 60 > score, 1, 0 )) 'bad'
+        FROM
+        ddedss.result
+        LEFT JOIN ddedss.`subject` ON result.subject_id = ddedss.`subject`.id
+        WHERE
+        student_id in
+        <foreach collection="studentIds" item="studentId" open="(" close=")" separator=",">
+            #{studentId}
+        </foreach>
+        GROUP BY
+        subject_id
+    </select>
 </mapper>

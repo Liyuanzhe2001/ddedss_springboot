@@ -3,6 +3,7 @@ package com.lyz.ddedss_springboot.test;
 import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
 public class NormalTest {
 
@@ -13,4 +14,11 @@ public class NormalTest {
         System.out.println(format);
     }
 
+    @Test
+    public void test2(){
+        LocalDateTime startTime = LocalDateTime.of(2020, 9, 1, 0, 0);
+        LocalDateTime endTime = LocalDateTime.of(2024, 9, 1, 0, 0);
+        System.out.println(startTime);
+        System.out.println(endTime);
+    }
 }
