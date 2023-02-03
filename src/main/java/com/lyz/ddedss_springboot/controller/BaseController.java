@@ -42,7 +42,7 @@ public class BaseController {
     @ExceptionHandler({BaseException.class})
     public ResultJson<Void> handleException(Throwable e) {
         ResultJson<Void> result = new ResultJson<>(ERR, "");
-        if(e instanceof BaseException) {
+        if (e instanceof BaseException) {
             result.setMsg(e.getMessage());
         }
         return result;
@@ -52,9 +52,14 @@ public class BaseController {
         session.setAttribute(key, value);
     }
 
-    public void setRoleIdAndUsername(Integer roleId, String username) {
-        setSession("roleId", roleId);
-        setSession("username", username);
+    public void setIdAndUsername(Integer userId, Integer roleId, String username) {
+        setUserId(userId);
+        setRoleId(roleId);
+        setUsername(username);
+    }
+
+    public void setUserId(Integer userId) {
+        setSession("userId", userId);
     }
 
     public void setRoleId(Integer roleId) {
@@ -63,6 +68,10 @@ public class BaseController {
 
     public void setUsername(String username) {
         setSession("username", username);
+    }
+
+    public Integer getUserId() {
+        return (Integer) session.getAttribute("userId");
     }
 
     public Integer getRoleId() {

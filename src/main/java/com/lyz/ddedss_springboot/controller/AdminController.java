@@ -85,7 +85,7 @@ public class AdminController extends BaseController {
      * 删除用户
      */
     @DeleteMapping("/deleteUser/{userId}")
-    public ResultJson<Void> DeleteUser(@PathVariable("userId") Integer userId) {
+    public ResultJson<Void> deleteUser(@PathVariable("userId") Integer userId) {
         // 根据角色id，删除角色
         User user = userService.getById(userId);
         boolean flag = false;
@@ -198,7 +198,7 @@ public class AdminController extends BaseController {
     }
 
     @PostMapping("/addProfessional")
-    public ResultJson<Void> addProfessional(AddProfessionalReqDto reqDto) throws NoSuchAlgorithmException {
+    public ResultJson<Void> addProfessional(@RequestBody AddProfessionalReqDto reqDto) throws NoSuchAlgorithmException {
         // 创建教育专家
         Professional professional = new Professional()
                 .setName(reqDto.getName());

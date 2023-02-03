@@ -10,8 +10,10 @@ import com.lyz.ddedss_springboot.exception.*;
 import com.lyz.ddedss_springboot.service.*;
 import com.lyz.ddedss_springboot.util.*;
 import com.lyz.ddedss_springboot.vo.Password;
+import io.netty.util.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -47,7 +49,7 @@ public class UserController extends BaseController {
      * 登录
      */
     @PostMapping("/login")
-    public ResultJson<LoginRespDto> login(LoginReqDto loginReqDto) throws NoSuchAlgorithmException {
+    public ResultJson<LoginRespDto> login(@RequestBody LoginReqDto loginReqDto) throws NoSuchAlgorithmException {
         Integer number = loginReqDto.getNumber();
         String password = loginReqDto.getPassword();
 
@@ -77,6 +79,7 @@ public class UserController extends BaseController {
         // 1 - teacher
         // 2 - professional
         // 3 - administrator
+        Integer userId = user.getId();
         Short identity = user.getIdentity();
         Integer roleId = user.getRoleId();
 
@@ -93,8 +96,8 @@ public class UserController extends BaseController {
                 break;
         }
 
-        // 将roleId和用户名放入session
-        setRoleIdAndUsername(roleId, username);
+        // 将userId,roleId和用户名放入session
+        setIdAndUsername(userId, roleId, username);
 
         // 创建返回结果对象
         LoginRespDto respDto = new LoginRespDto()
@@ -103,7 +106,7 @@ public class UserController extends BaseController {
                 .setToken(token);
 
         // 将token放入redis
-        redis.opsForValue().set(String.valueOf(roleId), token);
+        redis.opsForValue().set(String.valueOf(userId), token);
 
         return new ResultJson<>(OK, "登陆成功", respDto);
     }
@@ -131,17 +134,19 @@ public class UserController extends BaseController {
      * 注册
      */
     @PostMapping("/register")
-    public ResultJson<Void> register(RegisterReqDto reqDto) throws NoSuchAlgorithmException {
-
+    public ResultJson<Void> register(@RequestBody RegisterReqDto reqDto) throws NoSuchAlgorithmException {
         // 邮箱验证码验证
         String code = redis.opsForValue().get(reqDto.getEmail());
-        if (!reqDto.getCode().equals("123123")) {
+        if (StringUtil.isNullOrEmpty(code)) {
+            throw new EmailCodeNotFoundException("未找到该邮箱验证码");
+        }
+        if (!reqDto.getCode().equals(code)) {
             throw new ErrorVerificationCodeException("验证码错误");
         }
 
-        // 验证邀请码是否正确 通过验证码获取班级
+        // 验证注册码是否正确 通过验证码获取班级
         String classId = redis.opsForValue().get(reqDto.getInvite());
-        // 邀请码不存在
+        // 注册码不存在
         if (classId == null) {
             throw new InvitationCodeNotFoundException("未找到该邀请码");
         }
@@ -182,7 +187,7 @@ public class UserController extends BaseController {
      * 忘记密码
      */
     @PostMapping("/forgetPassword")
-    public ResultJson<Void> forgetPassword(ForgetPasswordReqDto reqDto) throws NoSuchAlgorithmException {
+    public ResultJson<Void> forgetPassword(@RequestBody ForgetPasswordReqDto reqDto) throws NoSuchAlgorithmException {
 
         // 判断邮箱与学号/工号是否对应
         boolean flag = userService.judgeUserByNumberAndEmail(reqDto.getNumber(), reqDto.getEmail());
@@ -209,7 +214,7 @@ public class UserController extends BaseController {
      * 判断密码是否正确
      */
     @PostMapping("/judgePassword")
-    public ResultJson<Void> judgePassword(Password reqDto) throws NoSuchAlgorithmException {
+    public ResultJson<Void> judgePassword(@RequestBody Password reqDto) throws NoSuchAlgorithmException {
         Integer roleId = getRoleId();
         boolean flag = userService.judgeUserPassword(roleId, reqDto.getPassword());
         if (!flag) {
@@ -222,7 +227,7 @@ public class UserController extends BaseController {
      * 修改密码
      */
     @PutMapping("/updatePassword")
-    public ResultJson<Void> updatePassword(Password reqDto) throws NoSuchAlgorithmException {
+    public ResultJson<Void> updatePassword(@RequestBody Password reqDto) throws NoSuchAlgorithmException {
         Integer roleId = getRoleId();
         boolean flag = userService.modifyPasswordByRoleId(roleId, reqDto.getPassword());
         if (!flag) {
@@ -235,7 +240,7 @@ public class UserController extends BaseController {
      * 管理员登录
      */
     @PostMapping("/adminLogin")
-    public ResultJson<AdminLoginRespDto> AdminLogin(AdminLoginReqDto reqDto) throws NoSuchAlgorithmException {
+    public ResultJson<AdminLoginRespDto> adminLogin(@RequestBody AdminLoginReqDto reqDto) throws NoSuchAlgorithmException {
         Integer number = reqDto.getNumber();
         String password = reqDto.getPassword();
 

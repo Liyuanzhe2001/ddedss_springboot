@@ -11,10 +11,7 @@ import com.lyz.ddedss_springboot.entity.Knowledge;
 import com.lyz.ddedss_springboot.service.KnowledgeService;
 import com.lyz.ddedss_springboot.util.ResultJson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +28,7 @@ public class KnowledgeController extends BaseController {
      */
     @GetMapping("/queryKnowledgeList")
     public ResultJson<List<QueryKnowledgeListRespDto>> queryKnowledgeList(PageReqDto pageReqDto) {
-        IPage<Knowledge> page = new Page<>(pageReqDto.getCurrentPage(), pageReqDto.getPageSize());
+        Page<Knowledge> page = new Page<>(pageReqDto.getCurrentPage(), pageReqDto.getPageSize());
         knowledgeService.page(page);
         List<QueryKnowledgeListRespDto> respDtos = new ArrayList<>();
         for (Knowledge knowledge : page.getRecords()) {
@@ -49,7 +46,6 @@ public class KnowledgeController extends BaseController {
      */
     @GetMapping("/queryKnowledgeListById")
     public ResultJson<List<QueryKnowledgeListByIdRespDto>> queryKnowledgeListById(PageReqDto pageReqDto) {
-        setRoleId(1);
         Integer teacherId = getRoleId();
         Page<Knowledge> page = new Page<>(pageReqDto.getCurrentPage(), pageReqDto.getPageSize());
         page = knowledgeService.queryKnowledgeList(page, teacherId);

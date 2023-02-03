@@ -18,7 +18,7 @@ public class AddProfessionalReqDto implements Serializable {
     /**
      * 工号
      */
-    private Integer number;
+    private Long number;
 
     /**
      * 姓名

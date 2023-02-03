@@ -18,11 +18,11 @@ public class PageReqDto implements Serializable {
     /**
      * 当前页码
      */
-    private Integer currentPage;
+    private Long currentPage;
 
     /**
      * 每页的大小
      */
-    private Integer pageSize;
+    private Long pageSize;
 
 }
