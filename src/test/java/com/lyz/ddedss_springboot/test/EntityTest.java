@@ -17,7 +17,7 @@ public class EntityTest {
         User user = new User();
         //1,123,"123123","aabbcc","123@qq.com",0,1
         user
-                .setNumber(123)
+                .setNumber(123L)
                 .setPassword("123123")
                 .setEmail("aaa@qq.com")
                 .setIdentity((short) 0)

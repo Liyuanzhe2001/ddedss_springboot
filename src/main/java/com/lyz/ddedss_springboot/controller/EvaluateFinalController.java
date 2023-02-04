@@ -11,6 +11,7 @@ import com.lyz.ddedss_springboot.service.*;
 import com.lyz.ddedss_springboot.util.ResultJson;
 import com.lyz.ddedss_springboot.vo.GradeTeacher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,9 @@ public class EvaluateFinalController extends BaseController {
 
     @Autowired
     private TeacherService teacherService;
+
+    @Autowired
+    private StringRedisTemplate redis;
 
     /**
      * 给教师的课程评价
@@ -63,6 +67,8 @@ public class EvaluateFinalController extends BaseController {
                     .setFinal_(gradeTeacher.getFinal_());
             evaluateFinalService.save(evaluateFinal);
         }
+
+        redis.opsForSet().add("evaluate", getRoleId().toString());
 
         return new ResultJson<>(OK, "评价成功");
     }

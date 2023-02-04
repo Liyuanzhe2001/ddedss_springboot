@@ -1,5 +1,6 @@
 package com.lyz.ddedss_springboot.controller;
 
+import cn.hutool.core.util.NumberUtil;
 import com.lyz.ddedss_springboot.dto.req.GetExaminationResultsReqDto;
 import com.lyz.ddedss_springboot.dto.req.ModifyStudentsScoreReqDto;
 import com.lyz.ddedss_springboot.dto.resp.GetAvgScoreByExamIdRespDto;
@@ -21,7 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 @RestController
@@ -72,7 +75,7 @@ public class ResultController extends BaseController {
 
         Double avgScore = resultService.getAvgScore(roleId, examId);
 
-        GetAvgScoreByExamIdRespDto respDto = new GetAvgScoreByExamIdRespDto(avgScore);
+        GetAvgScoreByExamIdRespDto respDto = new GetAvgScoreByExamIdRespDto(NumberUtil.round(avgScore, 2).doubleValue());
 
         return new ResultJson<>(OK, "查询成功", respDto);
     }
@@ -83,7 +86,6 @@ public class ResultController extends BaseController {
     @GetMapping("/haveAnnounceResultsNotice")
     public ResultJson<HaveNotice> haveAnnounceResultsNotice() {
         String notice = redis.opsForValue().get("announceResultsNotice");
-        new HaveNotice();
         if (StringUtil.isNullOrEmpty(notice)) {
             return new ResultJson<>(OK, "没有成绩需要公布", new HaveNotice((short) 0));
         }
@@ -108,7 +110,7 @@ public class ResultController extends BaseController {
             resultService.modifyStudentScore(studentId, examId, subjectId, score);
         }
 
-        return new ResultJson<>(OK,"修改成功");
+        return new ResultJson<>(OK, "修改成功");
     }
 
     /**

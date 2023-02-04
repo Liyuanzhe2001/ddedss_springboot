@@ -10,7 +10,7 @@ public class JsonTest {
     @Test
     public void test(){
         User userTest = new User();
-        userTest.setNumber(123);
+        userTest.setNumber(123L);
         userTest.setPassword("123123");
         userTest.setEmail("aaa.com");
         String json = JSONUtil.toJsonStr(userTest);
@@ -20,7 +20,7 @@ public class JsonTest {
     @Test
     public void testResultJson(){
         User userTest = new User();
-        userTest.setNumber(123);
+        userTest.setNumber(123L);
         userTest.setPassword("123123");
         userTest.setEmail("aaa.com");
         ResultJson<User> result = new ResultJson<>(-1, "正常", userTest);

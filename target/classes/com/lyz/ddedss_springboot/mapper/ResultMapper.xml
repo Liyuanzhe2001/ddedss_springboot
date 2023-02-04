@@ -5,6 +5,7 @@
         select exam_id
         from ddedss.result
         where student_id = #{studentId}
+        group by exam_id
     </select>
 
     <select id="getSumScore" resultType="java.lang.Integer">
@@ -16,6 +17,8 @@
         </foreach>
         and
         exam_id=#{examId}
+        and
+        score!=-1
     </select>
 
     <select id="getNoScoreStudentNum" resultType="java.lang.Integer">

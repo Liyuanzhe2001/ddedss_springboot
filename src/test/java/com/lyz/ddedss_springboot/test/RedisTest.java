@@ -37,10 +37,9 @@ public class RedisTest {
     }
 
     @Test
-    @Scheduled
     public void testList() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        String startTime = simpleDateFormat.format(System.currentTimeMillis());
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+//        String startTime = simpleDateFormat.format(System.currentTimeMillis());
         // 设置过期时间
 //        stringRedisTemplate.expire("evaluate", 10, TimeUnit.SECONDS);
         // 添加内容到集合
@@ -59,9 +58,15 @@ public class RedisTest {
     }
 
     @Test
-    public void testGetNull(){
+    public void testGetNull() {
         String b200113 = stringRedisTemplate.opsForValue().get("B200113");
         System.out.println(b200113);
+    }
+
+    @Test
+    public void testAdd() {
+        Integer roleId = 23;
+        stringRedisTemplate.opsForSet().add("evaluate", roleId.toString());
     }
 
 }

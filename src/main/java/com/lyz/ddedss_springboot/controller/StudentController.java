@@ -65,31 +65,4 @@ public class StudentController extends BaseController {
         return new ResultJson<>(OK, "获取成功", respDtos);
     }
 
-    /**
-     * 是否有课程评价通知
-     */
-    @GetMapping("/haveEvaluateCourseNotice")
-    public ResultJson<HaveNotice> haveEvaluateCourseNotice() {
-        setRoleId(10);
-        Integer roleId = getRoleId();
-
-        HaveNotice haveNotice = new HaveNotice().setHaveOrNot((short) 1);
-
-        // 判断 redis 中有没有 evaluate
-        int size = redis.opsForSet().members("evaluate").size();
-        if (size == 0) {
-            haveNotice.setHaveOrNot((short) 0);
-            return new ResultJson<>(OK, "无课程评价", haveNotice);
-        }
-
-        // 名字在evaluate中，说明已完成评价
-        Boolean evaluate = redis.opsForSet().isMember("evaluate", String.valueOf(roleId));
-        if (Boolean.TRUE.equals(evaluate)) {
-            haveNotice.setHaveOrNot((short) 0);
-            return new ResultJson<>(OK, "无课程评价", haveNotice);
-        }
-
-        return new ResultJson<>(OK, "有课程评价", haveNotice);
-    }
-
 }
