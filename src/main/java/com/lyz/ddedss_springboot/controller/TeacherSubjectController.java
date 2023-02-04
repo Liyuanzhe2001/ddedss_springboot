@@ -34,7 +34,6 @@ public class TeacherSubjectController extends BaseController {
      */
     @GetMapping("/queryTeacherSubjectLevel")
     public ResultJson<List<QueryTeacherSubjectLevelRespDto>> queryTeacherSubjectLevel() {
-        setRoleId(1);
         Integer teacherId = getRoleId();
         List<TeacherSubject> teacherSubjects = teacherSubjectService.getTeacherSubjects(teacherId);
 
@@ -54,7 +53,6 @@ public class TeacherSubjectController extends BaseController {
      */
     @PutMapping("/modifyTeacherSubjectLevel")
     public ResultJson<Void> modifyTeacherSubjectLevel(@RequestBody ModifyTeacherSubjectLevelReqDto reqDto) {
-        setRoleId(1);
         Integer teacherId = getRoleId();
 
         // 创建teacherSubject列表，方便修改失败进行回滚
@@ -68,7 +66,8 @@ public class TeacherSubjectController extends BaseController {
 
             // 获取该科目的id
             Integer subjectId = subjectService.getId(subjectLevel.getSubjectName());
-            // 如果不存在该科目，创建科目，再拿到科目id
+            // 如果不存在该科目，创建科目，再拿到科目id，
+            // 不存在该科目，也必然不存在对应的teacher_subject_id
             // 如果存在，拿到teacherSubjectId，拿到科目id
             if (subjectId == -1) {
                 Subject subject = new Subject()
@@ -76,9 +75,13 @@ public class TeacherSubjectController extends BaseController {
                 subjectService.save(subject);
                 teacherSubject.setSubjectId(subject.getId());
             } else {
-                teacherSubject
-                        .setId(teacherSubjectService.getId(teacherId, subjectId))
-                        .setSubjectId(subjectId);
+                teacherSubject.setSubjectId(subjectId);
+                // 判断是否存在teacherSubjectId
+                Integer teacherSubjectId = teacherSubjectService.getId(teacherId, subjectId);
+                // 如果存在，直接set
+                if (teacherSubjectId != -1) {
+                    teacherSubject.setId(teacherSubjectId);
+                }
             }
             teacherSubjectList.add(teacherSubject);
         }

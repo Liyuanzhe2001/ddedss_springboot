@@ -61,29 +61,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public boolean judgeUserPassword(Integer roleId, String password) throws NoSuchAlgorithmException {
+    public boolean judgeUserPassword(Integer userId, String password) throws NoSuchAlgorithmException {
         // 通过roleId 获取 盐值
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>()
                 .select(User::getSalt, User::getPassword)
-                .eq(User::getRoleId, roleId);
+                .eq(User::getId, userId);
         User user = getOne(lambdaQueryWrapper);
 
         return PasswordUtil.check(user.getPassword(), password, user.getSalt());
     }
 
     @Override
-    public boolean modifyPasswordByRoleId(Integer roleId, String password) throws NoSuchAlgorithmException {
+    public boolean modifyPasswordByRoleId(Integer userId, String password) throws NoSuchAlgorithmException {
         // 获取salt
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>()
                 .select(User::getSalt)
-                .eq(User::getRoleId, roleId);
+                .eq(User::getId, userId);
         User user = getOne(lambdaQueryWrapper);
 
         // 加密
         String encrypt = PasswordUtil.encrypt(password);
         password = PasswordUtil.encrypt(encrypt, user.getSalt());
         LambdaUpdateWrapper<User> set = new LambdaUpdateWrapper<User>()
-                .eq(User::getRoleId, roleId)
+                .eq(User::getId, userId)
                 .set(User::getPassword, password);
         return update(set);
     }
@@ -116,7 +116,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .ne(User::getIdentity, 3)
                 .eq(User::getId, userId);
         List<User> users = userMapper.selectList(lambdaQueryWrapper);
-        if(users.size() == 0) {
+        if (users.size() == 0) {
             throw new UserNotFoundExecption("未找到该用户");
         }
         return users.get(0);

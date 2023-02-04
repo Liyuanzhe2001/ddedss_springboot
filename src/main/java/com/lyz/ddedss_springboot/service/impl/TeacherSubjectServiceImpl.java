@@ -23,7 +23,12 @@ public class TeacherSubjectServiceImpl extends ServiceImpl<TeacherSubjectMapper,
         LambdaQueryWrapper<TeacherSubject> lambdaQueryWrapper = new LambdaQueryWrapper<TeacherSubject>()
                 .eq(TeacherSubject::getTeacherId, teacherId)
                 .eq(TeacherSubject::getSubjectId, subjectId);
-        return teacherSubjectMapper.selectOne(lambdaQueryWrapper).getId();
+        List<TeacherSubject> teacherSubjectList = teacherSubjectMapper.selectList(lambdaQueryWrapper);
+        // 不存在id，返回-1
+        if(teacherSubjectList.size() == 0) {
+            return -1;
+        }
+        return teacherSubjectList.get(0).getId();
     }
 
     @Override

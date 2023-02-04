@@ -29,12 +29,12 @@ public interface UserService extends IService<User> {
     /**
      * 判断用户密码
      */
-    public boolean judgeUserPassword(Integer roleId, String password) throws NoSuchAlgorithmException;
+    public boolean judgeUserPassword(Integer userId, String password) throws NoSuchAlgorithmException;
 
     /**
      * 通过roleId修改用户密码
      */
-    public boolean modifyPasswordByRoleId(Integer roleId, String password) throws NoSuchAlgorithmException;
+    public boolean modifyPasswordByRoleId(Integer userId, String password) throws NoSuchAlgorithmException;
 
     /**
      * 通过用户id获取管理员

@@ -215,8 +215,8 @@ public class UserController extends BaseController {
      */
     @PostMapping("/judgePassword")
     public ResultJson<Void> judgePassword(@RequestBody Password reqDto) throws NoSuchAlgorithmException {
-        Integer roleId = getRoleId();
-        boolean flag = userService.judgeUserPassword(roleId, reqDto.getPassword());
+        Integer userId = getUserId();
+        boolean flag = userService.judgeUserPassword(userId, reqDto.getPassword());
         if (!flag) {
             throw new ErrorPasswordException("密码错误");
         }
@@ -228,8 +228,8 @@ public class UserController extends BaseController {
      */
     @PutMapping("/updatePassword")
     public ResultJson<Void> updatePassword(@RequestBody Password reqDto) throws NoSuchAlgorithmException {
-        Integer roleId = getRoleId();
-        boolean flag = userService.modifyPasswordByRoleId(roleId, reqDto.getPassword());
+        Integer userId = getUserId();
+        boolean flag = userService.modifyPasswordByRoleId(userId, reqDto.getPassword());
         if (!flag) {
             throw new FailedModifyPasswordException("修改密码失败");
         }
