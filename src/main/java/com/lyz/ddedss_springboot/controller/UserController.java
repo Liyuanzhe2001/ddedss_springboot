@@ -5,6 +5,7 @@ import com.lyz.ddedss_springboot.dto.req.*;
 import com.lyz.ddedss_springboot.dto.resp.AdminLoginRespDto;
 import com.lyz.ddedss_springboot.dto.resp.LoginRespDto;
 import com.lyz.ddedss_springboot.entity.Student;
+import com.lyz.ddedss_springboot.entity.Teacher;
 import com.lyz.ddedss_springboot.entity.User;
 import com.lyz.ddedss_springboot.exception.*;
 import com.lyz.ddedss_springboot.service.*;
@@ -89,7 +90,9 @@ public class UserController extends BaseController {
                 username = studentService.getById(roleId).getName();
                 break;
             case 1:
-                username = teacherService.getById(roleId).getName();
+                Teacher teacher = teacherService.getById(roleId);
+                username = teacher.getName();
+                identity = (teacher.getIdentity() == (short) 0) ? (short) -1 : (short) 1;
                 break;
             case 2:
                 username = professionalService.getById(roleId).getName();
