@@ -15,8 +15,6 @@ spring:
     port: 6379
   mail:
     host: smtp.qq.com
-    username: 1732781024@qq.com
-    password: ewbsjajcxptvcaca
 
 
 # mybatis plus 配置
