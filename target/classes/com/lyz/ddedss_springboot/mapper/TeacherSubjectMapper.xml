@@ -13,6 +13,7 @@
                      INNER JOIN ddedss.`subject` s ON s.id = ts.subject_id
                      LEFT JOIN ddedss.`student` stu ON stu.class_id = c.id
         WHERE ts.teacher_id = #{teacherId}
+          and stu.is_deleted = 0
         GROUP BY stu.class_id
     </select>
 
@@ -22,6 +23,7 @@
                      INNER JOIN ddedss.teacher_subject ts ON l.teacher_subject_id = ts.id
         GROUP BY l.teacher_subject_id
         HAVING ts.subject_id = #{subjectId}
+           and ts.is_deleted = 0
         ORDER BY COUNT(l.id),
                  ts.`level` DESC
     </select>
@@ -30,12 +32,14 @@
         select count(*)
         from ddedss.teacher_subject
         where teacher_id in (select id from ddedss.teacher where name like "%"#{likeInputValue}"%")
+          and is_deleted = 0
     </select>
 
     <select id="getListLikeTeacherName" resultType="com.lyz.ddedss_springboot.entity.TeacherSubject">
         select *
         from ddedss.teacher_subject
         where teacher_id in (select id from ddedss.teacher where name like "%"#{likeInputValue}"%")
+          and is_deleted = 0
         limit #{pageNo},#{pageSize}
     </select>
 </mapper>

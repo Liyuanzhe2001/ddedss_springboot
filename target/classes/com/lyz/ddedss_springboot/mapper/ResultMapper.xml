@@ -29,7 +29,8 @@
           and score = -1
           AND student_id IN (SELECT id
                              FROM ddedss.student
-                             WHERE class_id = #{classId})
+                             WHERE class_id = #{classId}
+                               and is_deleted = 0)
     </select>
 
     <select id="getExaminationResults" resultType="com.lyz.ddedss_springboot.vo.ExaminationResults">

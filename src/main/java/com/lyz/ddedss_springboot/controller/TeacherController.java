@@ -74,7 +74,6 @@ public class TeacherController extends BaseController {
      */
     @GetMapping("/queryClassAndSubjectByTeacherId")
     public ResultJson<List<QueryClassAndSubjectByTeacherIdRespDto>> queryClassAndSubjectByTeacherId() {
-        setRoleId(100);
         Integer teacherId = getRoleId();
 
         List<QueryClassAndSubjectByTeacherIdRespDto> respDtos = new ArrayList<>();
@@ -86,7 +85,11 @@ public class TeacherController extends BaseController {
 
         for (ClassAndSubject classAndSubject : classAndSubjectList) {
             QueryClassAndSubjectByTeacherIdRespDto respDto = new QueryClassAndSubjectByTeacherIdRespDto();
-            respDto.setClassAndSubject(classAndSubject);
+            respDto.setSubjectId(classAndSubject.getSubjectId())
+                    .setSubjectName(classAndSubject.getSubjectName())
+                    .setClassId(classAndSubject.getClassId())
+                    .setClassName(classAndSubject.getClassName())
+                    .setPeopleNum(classAndSubject.getPeopleNum());
 
             Integer classId = classAndSubject.getClassId();
             Integer subjectId = classAndSubject.getSubjectId();

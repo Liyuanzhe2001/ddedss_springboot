@@ -16,7 +16,30 @@ public class QueryClassAndSubjectByTeacherIdRespDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private ClassAndSubject classAndSubject;
+    /**
+     * 班级id
+     */
+    private Integer classId;
+
+    /**
+     * 班级名
+     */
+    private String className;
+
+    /**
+     * 班级人数
+     */
+    private Integer peopleNum;
+
+    /**
+     * 课程id
+     */
+    private Integer subjectId;
+
+    /**
+     * 课程名
+     */
+    private String subjectName;
 
     /**
      * 是否完成（0未完成，1已完成）

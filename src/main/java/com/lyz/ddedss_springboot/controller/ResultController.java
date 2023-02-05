@@ -2,11 +2,9 @@ package com.lyz.ddedss_springboot.controller;
 
 import cn.hutool.core.util.NumberUtil;
 import com.lyz.ddedss_springboot.dto.req.GetExaminationResultsReqDto;
+import com.lyz.ddedss_springboot.dto.req.GetStudentScoreListReqDto;
 import com.lyz.ddedss_springboot.dto.req.ModifyStudentsScoreReqDto;
-import com.lyz.ddedss_springboot.dto.resp.GetAvgScoreByExamIdRespDto;
-import com.lyz.ddedss_springboot.dto.resp.GetExaminationResultsRespDto;
-import com.lyz.ddedss_springboot.dto.resp.GetResultByExamIdRespDto;
-import com.lyz.ddedss_springboot.dto.resp.HaveNotice;
+import com.lyz.ddedss_springboot.dto.resp.*;
 import com.lyz.ddedss_springboot.entity.Result;
 import com.lyz.ddedss_springboot.entity.Student;
 import com.lyz.ddedss_springboot.service.ExamService;
@@ -139,4 +137,33 @@ public class ResultController extends BaseController {
         return new ResultJson<>(OK, "查询成功", respDtos);
     }
 
+    /**
+     * 获取学生信息和分数
+     */
+    @GetMapping("/getStudentScoreList")
+    public ResultJson<List<GetStudentScoreListRespDto>> getStudentScoreList(GetStudentScoreListReqDto reqDto) {
+        // 通过classId获取所有学生信息
+        List<Student> students = studentService.getStudents(reqDto.getClassId());
+
+        List<GetStudentScoreListRespDto> respDtos = new ArrayList<>();
+
+        Integer examId = examService.getLatestId();
+
+        GetStudentScoreListRespDto tmpDto;
+        for (Student student : students) {
+            // 通过学生id，科目id，考试id获取学生该次考试分数
+            Integer score = resultService.getResult(student.getId(), reqDto.getSubjectId(), examId).getScore();
+            if (score < 0) {
+                score = null;
+            }
+            tmpDto = new GetStudentScoreListRespDto()
+                    .setStudentId(student.getId())
+                    .setStudentName(student.getName())
+                    .setStudentSex(student.getSex())
+                    .setScore(score);
+            respDtos.add(tmpDto);
+        }
+
+        return new ResultJson<>(OK, "查询成功", respDtos);
+    }
 }

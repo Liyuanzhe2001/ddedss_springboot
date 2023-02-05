@@ -15,7 +15,12 @@ public interface ResultService extends IService<Result> {
     public List<Integer> getExamId(Integer studentId);
 
     /**
-     * 获取学生成绩
+     * 获取某个学生某次考试分数
+     */
+    public Result getResult(Integer studentId,Integer subjectId,Integer examId);
+
+    /**
+     * 获取多名学生成绩
      */
     public List<Result> getResults(Integer examId, Integer studentId);
 

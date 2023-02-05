@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyz.ddedss_springboot.entity.Result;
+import com.lyz.ddedss_springboot.exception.ResultNotFoundException;
 import com.lyz.ddedss_springboot.mapper.ResultMapper;
 import com.lyz.ddedss_springboot.mapper.StudentMapper;
 import com.lyz.ddedss_springboot.service.ResultService;
@@ -26,6 +27,19 @@ public class ResultServiceImpl extends ServiceImpl<ResultMapper, Result> impleme
     @Override
     public List<Integer> getExamId(Integer studentId) {
         return resultMapper.getExamIdByStudentId(studentId);
+    }
+
+    @Override
+    public Result getResult(Integer studentId, Integer subjectId, Integer examId) {
+        LambdaQueryWrapper<Result> lambdaQueryWrapper = new LambdaQueryWrapper<Result>()
+                .eq(Result::getStudentId, studentId)
+                .eq(Result::getSubjectId, subjectId)
+                .eq(Result::getExamId, examId);
+        List<Result> results = resultMapper.selectList(lambdaQueryWrapper);
+        if (results.size() == 0) {
+            throw new ResultNotFoundException("未找到成绩");
+        }
+        return results.get(0);
     }
 
     @Override
