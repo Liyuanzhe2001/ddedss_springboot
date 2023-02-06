@@ -21,4 +21,10 @@ public class NormalTest {
         System.out.println(startTime);
         System.out.println(endTime);
     }
+
+    @Test
+    public void test3(){
+        Short s = 0;
+        System.out.println(s == (short)0);
+    }
 }

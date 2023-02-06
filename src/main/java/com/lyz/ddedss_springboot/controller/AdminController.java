@@ -43,6 +43,9 @@ public class AdminController extends BaseController {
     @Autowired
     private SubjectService subjectService;
 
+    @Autowired
+    private KnowledgeService knowledgeService;
+
     /**
      * 查询用户列表（除管理员）
      */
@@ -57,28 +60,45 @@ public class AdminController extends BaseController {
             QueryAllUserListRespDto respDto = new QueryAllUserListRespDto();
 
             // 获取用户名
-            String name = "";
-            switch (user.getIdentity()) {
+            String username = "";
+            Short identity = user.getIdentity();
+            Integer roleId = user.getRoleId();
+            switch (identity) {
                 case 0:
-                    name = studentService.getById(user.getRoleId()).getName();
+                    username = studentService.getById(roleId).getName();
                     break;
                 case 1:
-                    name = teacherService.getById(user.getRoleId()).getName();
+                    Teacher teacher = teacherService.getById(roleId);
+                    username = teacher.getName();
+                    identity = (teacher.getIdentity() == (short) 0) ? (short) -1 : (short) 1;
                     break;
                 case 2:
-                    name = professionalService.getById(user.getRoleId()).getName();
+                    username = professionalService.getById(roleId).getName();
                     break;
             }
 
             respDto.setUserId(user.getId())
                     .setUserNumber(user.getNumber())
-                    .setUserName(name)
+                    .setUserName(username)
                     .setUserEmail(user.getEmail())
-                    .setUserIdentity(user.getIdentity());
+                    .setUserIdentity(identity);
 
             respDtos.add(respDto);
         }
         return new ResultJson<>(OK, "查询成功", respDtos, page.getTotal());
+    }
+
+    /**
+     * 删除知识
+     */
+    @DeleteMapping("/deleteKnowledge/{knowledgeId}")
+    public ResultJson<Void> deleteKnowledge(@PathVariable("knowledgeId") Integer knowledgeId) {
+        boolean flag = knowledgeService.removeById(knowledgeId);
+        if (flag) {
+            return new ResultJson<>(OK, "删除成功");
+        } else {
+            throw new FailedDeleteKnowledgeException("删除知识失败");
+        }
     }
 
     /**
@@ -140,7 +160,7 @@ public class AdminController extends BaseController {
         Teacher teacher = new Teacher()
                 .setName(reqDto.getName())
                 .setSex(reqDto.getSex());
-        if (reqDto.getSubjectLevelList().size() == 0) {
+        if (reqDto.getSubjectLevelList() != null && reqDto.getSubjectLevelList().size() == 0) {
             teacher.setIdentity((short) 0);
         } else {
             teacher.setIdentity((short) 1);
@@ -168,32 +188,34 @@ public class AdminController extends BaseController {
         }
 
         // 创建teacher_subject
-        List<TeacherSubject> teacherSubjectList = new ArrayList<>();
-        for (SubjectLevel subjectLevel : reqDto.getSubjectLevelList()) {
-            TeacherSubject teacherSubject = new TeacherSubject();
-            // 根据科目名称查找科目id
-            Integer subjectId = subjectService.getId(subjectLevel.getSubjectName());
-            // 如果科目不存在 则创建科目
-            if (subjectId == -1) {
-                Subject subject = new Subject()
-                        .setName(subjectLevel.getSubjectName());
-                flag = subjectService.save(subject);
-                if (!flag) {
-                    throw new FailedCreateSubjectException("科目创建失败");
+        if (reqDto.getSubjectLevelList() != null && reqDto.getSubjectLevelList().size() == 0) {
+            List<TeacherSubject> teacherSubjectList = new ArrayList<>();
+            for (SubjectLevel subjectLevel : reqDto.getSubjectLevelList()) {
+                TeacherSubject teacherSubject = new TeacherSubject();
+                // 根据科目名称查找科目id
+                Integer subjectId = subjectService.getId(subjectLevel.getSubjectName());
+                // 如果科目不存在 则创建科目
+                if (subjectId == -1) {
+                    Subject subject = new Subject()
+                            .setName(subjectLevel.getSubjectName());
+                    flag = subjectService.save(subject);
+                    if (!flag) {
+                        throw new FailedCreateSubjectException("科目创建失败");
+                    }
+                    subjectId = subject.getId();
                 }
-                subjectId = subject.getId();
+                teacherSubject
+                        .setTeacherId(teacher.getId())
+                        .setSubjectId(subjectId)
+                        .setLevel(subjectLevel.getLevel());
+                teacherSubjectList.add(teacherSubject);
             }
-            teacherSubject
-                    .setTeacherId(teacher.getId())
-                    .setSubjectId(subjectId)
-                    .setLevel(subjectLevel.getLevel());
-            teacherSubjectList.add(teacherSubject);
+            flag = teacherSubjectService.saveOrUpdateBatch(teacherSubjectList);
+            if (!flag) {
+                throw new FailedCreateTeacherSubjectException("教师科目创建失败");
+            }
         }
 
-        flag = teacherSubjectService.saveOrUpdateBatch(teacherSubjectList);
-        if (!flag) {
-            throw new FailedCreateTeacherSubjectException("教师科目创建失败");
-        }
         return new ResultJson<>(OK, "创建成功");
     }
 
@@ -221,10 +243,10 @@ public class AdminController extends BaseController {
                 .setIdentity((short) 2)
                 .setRoleId(professional.getId());
         flag = userService.save(user);
-        if(!flag){
+        if (!flag) {
             throw new FailedCreateUserException("用户创建失败");
         }
-        return new ResultJson<>(OK,"创建成功");
+        return new ResultJson<>(OK, "创建成功");
     }
 
 }
