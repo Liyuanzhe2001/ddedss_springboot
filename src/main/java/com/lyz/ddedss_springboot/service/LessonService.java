@@ -17,4 +17,9 @@ public interface LessonService extends IService<Lesson> {
      */
     public List<Lesson> getLessonList(Integer classId);
 
+    /**
+     * 获取教师课程安排
+     */
+    public List<Lesson> getLessonListByTeacherId(Integer teacherId);
+
 }

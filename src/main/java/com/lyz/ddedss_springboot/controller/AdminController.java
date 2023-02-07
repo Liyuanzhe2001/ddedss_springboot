@@ -159,12 +159,8 @@ public class AdminController extends BaseController {
         // 创建教师对象
         Teacher teacher = new Teacher()
                 .setName(reqDto.getName())
-                .setSex(reqDto.getSex());
-        if (reqDto.getSubjectLevelList() != null && reqDto.getSubjectLevelList().size() == 0) {
-            teacher.setIdentity((short) 0);
-        } else {
-            teacher.setIdentity((short) 1);
-        }
+                .setSex(reqDto.getSex())
+                .setIdentity((short) 1);
         boolean flag = teacherService.save(teacher);
         if (!flag) {
             throw new FailedCreateTeacherException("创建教师失败");

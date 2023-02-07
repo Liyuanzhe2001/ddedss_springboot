@@ -2,6 +2,7 @@ package com.lyz.ddedss_springboot.controller;
 
 import com.lyz.ddedss_springboot.dto.req.ScheduleLessonReqDto;
 import com.lyz.ddedss_springboot.dto.resp.GetLessonsByClassIdRespDto;
+import com.lyz.ddedss_springboot.dto.resp.GetLessonsByTeacherIdRespDto;
 import com.lyz.ddedss_springboot.dto.resp.GetSubjectNameByIdRespDto;
 import com.lyz.ddedss_springboot.entity.Lesson;
 import com.lyz.ddedss_springboot.exception.FailedCreateLessonException;
@@ -30,6 +31,22 @@ public class LessonController extends BaseController {
         List<GetLessonsByClassIdRespDto> respDtos = new ArrayList<>();
         for (Lesson lesson : lessonList) {
             GetLessonsByClassIdRespDto respDto = new GetLessonsByClassIdRespDto()
+                    .setWeekday(lesson.getWeekday())
+                    .setSection(lesson.getSection());
+            respDtos.add(respDto);
+        }
+        return new ResultJson<>(OK, "查询成功", respDtos);
+    }
+
+    /**
+     * 获取教师的带的课
+     */
+    @GetMapping("/getLessonsByTeacherId/{teacherId}")
+    public ResultJson<List<GetLessonsByTeacherIdRespDto>> getLessonsByTeacherId(@PathVariable("teacherId") Integer teacherId) {
+        List<Lesson> lessonList = lessonService.getLessonListByTeacherId(teacherId);
+        List<GetLessonsByTeacherIdRespDto> respDtos = new ArrayList<>();
+        for (Lesson lesson : lessonList) {
+            GetLessonsByTeacherIdRespDto respDto = new GetLessonsByTeacherIdRespDto()
                     .setWeekday(lesson.getWeekday())
                     .setSection(lesson.getSection());
             respDtos.add(respDto);

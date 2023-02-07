@@ -21,9 +21,9 @@
         SELECT ts.teacher_id, ts.subject_id
         FROM ddedss.lesson l
                      INNER JOIN ddedss.teacher_subject ts ON l.teacher_subject_id = ts.id
+        where ts.is_deleted = 0
         GROUP BY l.teacher_subject_id
         HAVING ts.subject_id = #{subjectId}
-           and ts.is_deleted = 0
         ORDER BY COUNT(l.id),
                  ts.`level` DESC
     </select>
