@@ -124,7 +124,7 @@ public class ResultController extends BaseController {
             studentIds.add(student.getId());
         });
 
-        List<ExaminationResults> results = resultService.getExaminationResults(studentIds);
+        List<ExaminationResults> results = resultService.getExaminationResults(studentIds, reqDto.getExamId());
         List<GetExaminationResultsRespDto> respDtos = new ArrayList<>();
         for (ExaminationResults result : results) {
             GetExaminationResultsRespDto respDto = new GetExaminationResultsRespDto()

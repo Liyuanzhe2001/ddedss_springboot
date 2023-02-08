@@ -51,8 +51,8 @@ public class ResultServiceImpl extends ServiceImpl<ResultMapper, Result> impleme
     }
 
     @Override
-    public List<ExaminationResults> getExaminationResults(List<Integer> studentIds) {
-        return resultMapper.getExaminationResults(studentIds);
+    public List<ExaminationResults> getExaminationResults(List<Integer> studentIds,Integer examId) {
+        return resultMapper.getExaminationResults(studentIds,examId);
     }
 
     @Override

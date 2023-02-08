@@ -88,25 +88,32 @@ public class EvaluateFinalController extends BaseController {
             String teacherName = teacherService.getById(teacherSubject.getTeacherId()).getName();
             // 根据subjectId获取subjectName
             String subjectName = subjectService.getById(teacherSubject.getSubjectId()).getName();
-            // 根据teacher_subject_id获取评价ids
-            List<Integer> ids = evaluateService.getIds(teacherSubject.getId());
-            // 根据evaluate ids 获取这几评价的结果总和
-            // 判断 evaluate 有没有好评
-            boolean haveGood = evaluateFinalService.haveGood(ids);
-            // 判断 evaluate 中有没有差评
-            boolean haveBad = evaluateFinalService.haveBad(ids);
-            List<Integer> result = evaluateFinalService.getResult(ids);
 
             respDto.setTeacherName(teacherName)
                     .setSubjectName(subjectName);
-            if (haveBad && haveGood) {
-                respDto.setGoodNum(result.get(0))
-                        .setBadNum(result.get(1));
-            } else if (haveBad) {
+
+            // 根据teacher_subject_id获取评价ids
+            List<Integer> ids = evaluateService.getIds(teacherSubject.getId());
+            // 根据evaluate ids 获取这几评价的结果总和
+            if (!ids.isEmpty()) {
+                // 判断 evaluate 有没有好评
+                boolean haveGood = evaluateFinalService.haveGood(ids);
+                // 判断 evaluate 中有没有差评
+                boolean haveBad = evaluateFinalService.haveBad(ids);
+                List<Integer> result = evaluateFinalService.getResult(ids);
+
+                if (haveBad && haveGood) {
+                    respDto.setGoodNum(result.get(0))
+                            .setBadNum(result.get(1));
+                } else if (haveBad) {
+                    respDto.setGoodNum(0)
+                            .setBadNum(result.get(0));
+                } else if (haveGood) {
+                    respDto.setGoodNum(result.get(0))
+                            .setBadNum(0);
+                }
+            } else {
                 respDto.setGoodNum(0)
-                        .setBadNum(result.get(0));
-            } else if (haveGood) {
-                respDto.setGoodNum(result.get(0))
                         .setBadNum(0);
             }
             respDtos.add(respDto);

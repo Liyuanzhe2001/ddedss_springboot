@@ -29,6 +29,6 @@ public interface ResultMapper extends BaseMapper<Result> {
     /**
      * 获取学生成绩情况List
      */
-    public List<ExaminationResults> getExaminationResults(List<Integer> studentIds);
+    public List<ExaminationResults> getExaminationResults(List<Integer> studentIds,Integer examId);
 
 }

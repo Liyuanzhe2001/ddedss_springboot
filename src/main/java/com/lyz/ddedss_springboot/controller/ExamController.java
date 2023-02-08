@@ -1,19 +1,14 @@
 package com.lyz.ddedss_springboot.controller;
 
-import com.lyz.ddedss_springboot.dto.req.GetExaminationResultsReqDto;
 import com.lyz.ddedss_springboot.dto.resp.GetAllExamByClassIdRespDto;
 import com.lyz.ddedss_springboot.dto.resp.GetExamListByStudentIdRespDto;
-import com.lyz.ddedss_springboot.dto.resp.GetExaminationResultsRespDto;
 import com.lyz.ddedss_springboot.entity.Class_;
 import com.lyz.ddedss_springboot.entity.Exam;
-import com.lyz.ddedss_springboot.entity.Result;
-import com.lyz.ddedss_springboot.entity.Student;
 import com.lyz.ddedss_springboot.service.ClassService;
 import com.lyz.ddedss_springboot.service.ExamService;
 import com.lyz.ddedss_springboot.service.ResultService;
 import com.lyz.ddedss_springboot.service.StudentService;
 import com.lyz.ddedss_springboot.util.ResultJson;
-import com.lyz.ddedss_springboot.vo.ExaminationResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

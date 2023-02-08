@@ -27,7 +27,7 @@ public interface ResultService extends IService<Result> {
     /**
      * 获取学生成绩情况List
      */
-    public List<ExaminationResults> getExaminationResults(List<Integer> studentIds);
+    public List<ExaminationResults> getExaminationResults(List<Integer> studentIds,Integer examId);
 
     /**
      * 获取班级考试平均分

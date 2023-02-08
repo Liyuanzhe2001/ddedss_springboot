@@ -31,14 +31,14 @@
     <select id="getCountLikeTeacherName" resultType="java.lang.Long">
         select count(*)
         from ddedss.teacher_subject
-        where teacher_id in (select id from ddedss.teacher where name like "%"#{likeInputValue}"%")
+        where teacher_id in (select id from ddedss.teacher where name like "%"#{likeInputValue}"%" and is_deleted=0)
           and is_deleted = 0
     </select>
 
     <select id="getListLikeTeacherName" resultType="com.lyz.ddedss_springboot.entity.TeacherSubject">
         select *
         from ddedss.teacher_subject
-        where teacher_id in (select id from ddedss.teacher where name like "%"#{likeInputValue}"%")
+        where teacher_id in (select id from ddedss.teacher where name like "%"#{likeInputValue}"%" and is_deleted=0)
           and is_deleted = 0
         limit #{pageNo},#{pageSize}
     </select>

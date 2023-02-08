@@ -47,6 +47,7 @@
         <foreach collection="studentIds" item="studentId" open="(" close=")" separator=",">
             #{studentId}
         </foreach>
+        and exam_id=#{examId}
         GROUP BY
         subject_id
     </select>
