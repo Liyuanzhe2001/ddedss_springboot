@@ -13,4 +13,9 @@ public interface InstructorService extends IService<Instructor> {
      */
     public List<Integer> getManagedClassIds(Integer teacherId);
 
+    /**
+     * 判断教师是否为班级辅导员
+     */
+    public boolean judgeTeacher(Integer teacherId, Integer classId);
+
 }

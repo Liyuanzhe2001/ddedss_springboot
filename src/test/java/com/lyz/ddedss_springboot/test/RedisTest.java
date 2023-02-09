@@ -11,6 +11,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
@@ -67,6 +69,37 @@ public class RedisTest {
     public void testAdd() {
         Integer roleId = 23;
         stringRedisTemplate.opsForSet().add("evaluate", roleId.toString());
+    }
+
+    /**
+     * redis加入string测试
+     */
+    @Test
+    public void addString() {
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        stringRedisTemplate.opsForValue().set(uuid, "2");
+    }
+
+    /**
+     * keys *
+     */
+    @Test
+    public void keys() {
+        Set<String> keys = stringRedisTemplate.keys("*");
+        for (String key : keys) {
+            if (key.length() == 32) {
+                System.out.println(stringRedisTemplate.opsForValue().get(key));
+            }
+        }
+    }
+
+    /**
+     * 获取过期时间
+     */
+    @Test
+    public void get(){
+        Long expire = stringRedisTemplate.opsForValue().getOperations().getExpire("761c09f7d29345ada0bc96b5501635aa");
+        System.out.println(expire);
     }
 
 }

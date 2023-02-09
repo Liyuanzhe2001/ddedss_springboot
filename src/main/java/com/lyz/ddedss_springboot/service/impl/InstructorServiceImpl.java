@@ -28,4 +28,14 @@ public class InstructorServiceImpl extends ServiceImpl<InstructorMapper, Instruc
         }
         return list;
     }
+
+    @Override
+    public boolean judgeTeacher(Integer teacherId, Integer classId) {
+        LambdaQueryWrapper<Instructor> lambdaQueryWrapper = new LambdaQueryWrapper<Instructor>()
+                .eq(Instructor::getTeacherId, teacherId)
+                .eq(Instructor::getClassId, classId);
+        List<Instructor> instructors = instructorMapper.selectList(lambdaQueryWrapper);
+
+        return instructors.size() == 1;
+    }
 }

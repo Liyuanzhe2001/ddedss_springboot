@@ -1,21 +1,25 @@
 package com.lyz.ddedss_springboot.controller;
 
+import cn.hutool.core.date.BetweenFormatter;
+import cn.hutool.core.date.DateUtil;
+import com.lyz.ddedss_springboot.dto.resp.CreateInviteRespDto;
 import com.lyz.ddedss_springboot.dto.resp.QueryClassAndSubjectByTeacherIdRespDto;
 import com.lyz.ddedss_springboot.dto.resp.QueryTeacherListByClassIdRespDto;
 import com.lyz.ddedss_springboot.entity.Subject;
 import com.lyz.ddedss_springboot.entity.Teacher;
 import com.lyz.ddedss_springboot.entity.TeacherSubject;
+import com.lyz.ddedss_springboot.exception.InsufficientPermissionException;
 import com.lyz.ddedss_springboot.service.*;
 import com.lyz.ddedss_springboot.util.ResultJson;
 import com.lyz.ddedss_springboot.vo.ClassAndSubject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/teacher")
@@ -37,7 +41,13 @@ public class TeacherController extends BaseController {
     private ExamService examService;
 
     @Autowired
+    private InstructorService instructorService;
+
+    @Autowired
     private ResultService resultService;
+
+    @Autowired
+    private StringRedisTemplate redis;
 
     /**
      * 通过班级id查询教师课程列表
@@ -103,6 +113,44 @@ public class TeacherController extends BaseController {
         }
 
         return new ResultJson<>(OK, "查询成功", respDtos);
+    }
+
+    /**
+     * 创建注册码
+     */
+    @GetMapping("/createInvite/{classId}")
+    public ResultJson<CreateInviteRespDto> createInvite(@PathVariable("classId") Integer classId) {
+        // 获取teacherId
+        Integer teacherId = getRoleId();
+        // 根据teacherId、classId查找instructor表数据
+        boolean flag = instructorService.judgeTeacher(teacherId, classId);
+        if (!flag) {
+            throw new InsufficientPermissionException("权限不足");
+        }
+
+        CreateInviteRespDto respDto = new CreateInviteRespDto();
+        // 判断是否有验证码
+        Set<String> keys = redis.keys("*");
+        for (String key : Objects.requireNonNull(keys)) {
+            if (key.length() == 32) {
+                if (Objects.equals(redis.opsForValue().get(key), String.valueOf(classId))) {
+                    Long timeRemaining = redis.opsForValue().getOperations().getExpire(key);
+                    Integer day = Math.toIntExact(timeRemaining / 60 / 60 / 24);
+                    Integer hour = Math.toIntExact(timeRemaining / 60 / 60 % 24);
+
+                    respDto.setInvite(key)
+                            .setDay(day)
+                            .setHour(hour);
+                    return new ResultJson<>(OK, "查询成功", respDto);
+                }
+            }
+        }
+        String inviteCode = UUID.randomUUID().toString().replaceAll("-", "");
+        redis.opsForValue().set(inviteCode, String.valueOf(classId));
+        respDto.setInvite(inviteCode)
+                .setHour(23)
+                .setDay(6);
+        return new ResultJson<>(OK, "创建成功", respDto);
     }
 
 

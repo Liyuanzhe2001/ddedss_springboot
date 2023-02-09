@@ -27,4 +27,16 @@ public class NormalTest {
         Short s = 0;
         System.out.println(s == (short)0);
     }
+
+    /**
+     * 时间格式化
+     */
+    @Test
+    public void timeFormat(){
+        Long timeRemaining = 1234567L;
+        Integer day = Math.toIntExact(timeRemaining / 60 / 60 / 24);
+        Integer hour = Math.toIntExact(timeRemaining / 60 / 60 % 24);
+        System.out.println(day);
+        System.out.println(hour);
+    }
 }
