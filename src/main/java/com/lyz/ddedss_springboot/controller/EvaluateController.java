@@ -1,12 +1,18 @@
 package com.lyz.ddedss_springboot.controller;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import com.lyz.ddedss_springboot.dto.req.SetCourseEvaluationReqDto;
+import com.lyz.ddedss_springboot.dto.resp.GetAvgScoreByExamIdRespDto;
+import com.lyz.ddedss_springboot.dto.resp.GetEvaluationTimeRespDto;
 import com.lyz.ddedss_springboot.dto.resp.HaveNotice;
 import com.lyz.ddedss_springboot.util.ResultJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/evaluate")
@@ -39,6 +45,50 @@ public class EvaluateController extends BaseController {
         }
 
         return new ResultJson<>(OK, "有课程评价", haveNotice);
+    }
+
+    /**
+     * 获取课程评价时间
+     */
+    @GetMapping("/getEvaluationTime")
+    public ResultJson<GetEvaluationTimeRespDto> getEvaluationTime() {
+        String startTime = redis.opsForValue().get("startTime");
+        String endTime = redis.opsForValue().get("endTime");
+        boolean startFlag = true, endFlag = true;
+        if (startTime == null) {
+            startFlag = false;
+        }
+        if (endTime == null) {
+            endFlag = false;
+        }
+        GetEvaluationTimeRespDto respDto = new GetEvaluationTimeRespDto();
+        if (startFlag && endFlag) {
+            respDto.setStart(startTime)
+                    .setEnd(endTime);
+            return new ResultJson<>(OK, "查询成功", respDto);
+        }
+        if (!startFlag && !endFlag) {
+            return new ResultJson<>(OK, "查询成功", respDto);
+        }
+        if (startFlag) {
+            redis.delete("startTime");
+        }
+        if (endFlag) {
+            redis.delete("endTime");
+        }
+        return new ResultJson<>(OK, "查询成功", respDto);
+    }
+
+    /**
+     * 预定课程评估价
+     */
+    @PostMapping("/setCourseEvaluation")
+    public ResultJson<Void> setCourseEvaluation(@RequestBody SetCourseEvaluationReqDto reqDto) {
+        String start = reqDto.getStart();
+        String end = reqDto.getEnd();
+        redis.opsForValue().set("startTime", start);
+        redis.opsForValue().set("endTime", end);
+        return new ResultJson<>(OK, "设置成功");
     }
 
 }

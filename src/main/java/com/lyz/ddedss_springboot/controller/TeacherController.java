@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/teacher")
@@ -146,7 +147,7 @@ public class TeacherController extends BaseController {
             }
         }
         String inviteCode = UUID.randomUUID().toString().replaceAll("-", "");
-        redis.opsForValue().set(inviteCode, String.valueOf(classId));
+        redis.opsForValue().set(inviteCode, String.valueOf(classId), 7 , TimeUnit.DAYS);
         respDto.setInvite(inviteCode)
                 .setHour(23)
                 .setDay(6);

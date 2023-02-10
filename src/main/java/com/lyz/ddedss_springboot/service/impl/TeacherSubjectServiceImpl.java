@@ -1,6 +1,7 @@
 package com.lyz.ddedss_springboot.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyz.ddedss_springboot.entity.TeacherSubject;
@@ -10,6 +11,7 @@ import com.lyz.ddedss_springboot.vo.ClassAndSubject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,7 +27,7 @@ public class TeacherSubjectServiceImpl extends ServiceImpl<TeacherSubjectMapper,
                 .eq(TeacherSubject::getSubjectId, subjectId);
         List<TeacherSubject> teacherSubjectList = teacherSubjectMapper.selectList(lambdaQueryWrapper);
         // 不存在id，返回-1
-        if(teacherSubjectList.size() == 0) {
+        if (teacherSubjectList.size() == 0) {
             return -1;
         }
         return teacherSubjectList.get(0).getId();
@@ -50,12 +52,20 @@ public class TeacherSubjectServiceImpl extends ServiceImpl<TeacherSubjectMapper,
 
     @Override
     public Page<TeacherSubject> getListLikeTeacherName(String likeInputValue, Page<TeacherSubject> page) {
-        Long pageSize =  page.getSize();
+        Long pageSize = page.getSize();
         Long pageNo = (page.getCurrent() - 1) * page.getSize();
         Long total = teacherSubjectMapper.getCountLikeTeacherName(likeInputValue);
         List<TeacherSubject> teacherSubjectList = teacherSubjectMapper.getListLikeTeacherName(likeInputValue, pageNo, pageSize);
         page.setTotal(total)
                 .setRecords(teacherSubjectList);
         return page;
+    }
+
+    @Override
+    public List<Integer> getAllIds() {
+        List<TeacherSubject> teacherSubjectList = teacherSubjectMapper.selectList(new LambdaUpdateWrapper<>());
+        List<Integer> list = new ArrayList<>();
+        teacherSubjectList.forEach(teacherSubject -> list.add(teacherSubject.getId()));
+        return list;
     }
 }

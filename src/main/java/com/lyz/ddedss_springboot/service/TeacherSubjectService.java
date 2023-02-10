@@ -36,4 +36,9 @@ public interface TeacherSubjectService extends IService<TeacherSubject> {
      */
     public Page<TeacherSubject> getListLikeTeacherName(String likeInputValue, Page<TeacherSubject> page);
 
+    /**
+     * 获取所有id
+     */
+    public List<Integer> getAllIds();
+
 }
