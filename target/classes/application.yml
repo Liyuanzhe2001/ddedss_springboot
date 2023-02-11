@@ -21,9 +21,9 @@ spring:
 
 # mybatis plus 配置
 mybatis-plus:
-#  configuration:
-#     输出日志到控制台
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  configuration:
+    # 输出日志到控制台
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
       logic-delete-field: isDeleted
