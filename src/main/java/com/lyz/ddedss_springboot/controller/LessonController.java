@@ -54,8 +54,8 @@ public class LessonController extends BaseController {
         return new ResultJson<>(OK, "查询成功", respDtos);
     }
 
-    @PostMapping("/ScheduleLesson")
-    public ResultJson<Void> scheduleLesson(ScheduleLessonReqDto reqDto) {
+    @PostMapping("/scheduleLesson")
+    public ResultJson<Void> scheduleLesson(@RequestBody ScheduleLessonReqDto reqDto) {
         // 根据教师id，科目id获取 teacher_subject_id
         Integer teacherSubjectId = teacherSubjectService.getId(reqDto.getTeacherId(), reqDto.getSubjectId());
         // 创建lesson
