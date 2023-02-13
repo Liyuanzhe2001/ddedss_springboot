@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
@@ -275,6 +276,18 @@ public class UserController extends BaseController {
 
         AdminLoginRespDto adminLoginRespDto = new AdminLoginRespDto(token);
         return new ResultJson<>(OK, "登陆成功", adminLoginRespDto);
+    }
+
+    @PostMapping("/exit")
+    public ResultJson<Void> exit() {
+        System.out.println("退出");
+        Integer userId = getUserId();
+        Boolean delete = redis.delete(String.valueOf(userId));
+        if (Boolean.TRUE.equals(delete)) {
+            return new ResultJson<>(OK, "退出成功");
+        } else {
+            return new ResultJson<>(-1, "退出失败");
+        }
     }
 
 }

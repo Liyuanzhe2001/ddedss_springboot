@@ -3,6 +3,7 @@ package com.lyz.ddedss_springboot.config;
 import com.lyz.ddedss_springboot.component.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -14,6 +15,9 @@ public class MvcConfig implements WebMvcConfigurer {
     @Autowired
     private LoginInterceptor loginInterceptor;
 
+    @Autowired
+    private StringRedisTemplate redis;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //注册自己的拦截器,并设置拦截的请求路径
@@ -22,7 +26,6 @@ public class MvcConfig implements WebMvcConfigurer {
         registry
                 .addInterceptor(loginInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/**");
-//                .excludePathPatterns("/user/login");
+                .excludePathPatterns("/user/**");
     }
 }
