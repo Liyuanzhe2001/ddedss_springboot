@@ -3,10 +3,13 @@ package com.lyz.ddedss_springboot.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lyz.ddedss_springboot.entity.Result;
 import com.lyz.ddedss_springboot.vo.ExaminationResults;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ResultMapper extends BaseMapper<Result> {
@@ -29,6 +32,12 @@ public interface ResultMapper extends BaseMapper<Result> {
     /**
      * 获取学生成绩情况List
      */
-    public List<ExaminationResults> getExaminationResults(List<Integer> studentIds,Integer examId);
+    public List<ExaminationResults> getExaminationResults(List<Integer> studentIds, Integer examId);
+
+    /**
+     * 获取某段时间科目平均成绩
+     */
+    @MapKey("year")
+    public Map<Integer, Map<String,Double>> getAvgScoreByTime(Integer startYear, Integer endYear, Integer subjectId);
 
 }

@@ -1,11 +1,11 @@
 package com.lyz.ddedss_springboot.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lyz.ddedss_springboot.entity.Exam;
 import com.lyz.ddedss_springboot.entity.Result;
 import com.lyz.ddedss_springboot.vo.ExaminationResults;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ResultService extends IService<Result> {
 
@@ -17,7 +17,7 @@ public interface ResultService extends IService<Result> {
     /**
      * 获取某个学生某次考试分数
      */
-    public Result getResult(Integer studentId,Integer subjectId,Integer examId);
+    public Result getResult(Integer studentId, Integer subjectId, Integer examId);
 
     /**
      * 获取多名学生成绩
@@ -27,7 +27,7 @@ public interface ResultService extends IService<Result> {
     /**
      * 获取学生成绩情况List
      */
-    public List<ExaminationResults> getExaminationResults(List<Integer> studentIds,Integer examId);
+    public List<ExaminationResults> getExaminationResults(List<Integer> studentIds, Integer examId);
 
     /**
      * 获取班级考试平均分
@@ -43,5 +43,10 @@ public interface ResultService extends IService<Result> {
      * 修改学生分数
      */
     public void modifyStudentScore(Integer studentId, Integer examId, Integer subjectId, Integer score);
+
+    /**
+     * 获取某段时间科目平均成绩
+     */
+    public Map<Integer, Map<String, Double>> getAvgScoreByTime(Integer startYear, Integer endYear, Integer subjectId);
 
 }

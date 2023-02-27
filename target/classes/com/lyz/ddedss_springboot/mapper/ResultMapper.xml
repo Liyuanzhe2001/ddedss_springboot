@@ -51,4 +51,17 @@
         GROUP BY
         subject_id
     </select>
+
+    <select id="getAvgScoreByTime" resultType="java.util.Map">
+        SELECT `year`,
+               avg(result.score) score
+        FROM ddedss.exam
+                     INNER JOIN ddedss.result ON exam.id = result.exam_id
+        WHERE score != - 1
+          and subject_id = #{subjectId}
+          AND `year` BETWEEN #{startYear} AND #{endYear}
+        GROUP BY `year`
+        order by `year`
+    </select>
+
 </mapper>

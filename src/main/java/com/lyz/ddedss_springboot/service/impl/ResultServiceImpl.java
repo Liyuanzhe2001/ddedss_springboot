@@ -2,7 +2,6 @@ package com.lyz.ddedss_springboot.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyz.ddedss_springboot.entity.Result;
 import com.lyz.ddedss_springboot.exception.ResultNotFoundException;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ResultServiceImpl extends ServiceImpl<ResultMapper, Result> implements ResultService {
@@ -51,8 +51,8 @@ public class ResultServiceImpl extends ServiceImpl<ResultMapper, Result> impleme
     }
 
     @Override
-    public List<ExaminationResults> getExaminationResults(List<Integer> studentIds,Integer examId) {
-        return resultMapper.getExaminationResults(studentIds,examId);
+    public List<ExaminationResults> getExaminationResults(List<Integer> studentIds, Integer examId) {
+        return resultMapper.getExaminationResults(studentIds, examId);
     }
 
     @Override
@@ -80,5 +80,10 @@ public class ResultServiceImpl extends ServiceImpl<ResultMapper, Result> impleme
                 .eq(Result::getSubjectId, subjectId)
                 .set(Result::getScore, score);
         update(lambdaUpdateWrapper);
+    }
+
+    @Override
+    public Map<Integer, Map<String, Double>> getAvgScoreByTime(Integer startYear, Integer endYear, Integer subjectId) {
+        return resultMapper.getAvgScoreByTime(startYear, endYear, subjectId);
     }
 }

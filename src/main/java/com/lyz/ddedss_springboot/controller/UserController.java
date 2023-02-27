@@ -278,9 +278,11 @@ public class UserController extends BaseController {
         return new ResultJson<>(OK, "登陆成功", adminLoginRespDto);
     }
 
+    /**
+     * 退出登录
+     */
     @PostMapping("/exit")
     public ResultJson<Void> exit() {
-        System.out.println("退出");
         Integer userId = getUserId();
         Boolean delete = redis.delete(String.valueOf(userId));
         if (Boolean.TRUE.equals(delete)) {

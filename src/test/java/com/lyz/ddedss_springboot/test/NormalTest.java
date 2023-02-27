@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 
 public class NormalTest {
@@ -63,5 +64,12 @@ public class NormalTest {
         System.out.println(startTime.compareTo(startTime));
 
 //        System.out.println(DateUtil.parse(startTime.toDateStr(), "yyyy-MM-dd").toString());
+    }
+
+    @Test
+    public void getYeas(){
+        Calendar calendar=Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        System.out.println(year);
     }
 }

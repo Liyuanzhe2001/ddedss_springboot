@@ -15,15 +15,11 @@ import com.lyz.ddedss_springboot.util.ResultJson;
 import com.lyz.ddedss_springboot.vo.ExaminationResults;
 import com.lyz.ddedss_springboot.vo.StudentScore;
 import io.netty.util.internal.StringUtil;
-import org.apache.ibatis.transaction.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/result")
@@ -162,6 +158,32 @@ public class ResultController extends BaseController {
                     .setStudentSex(student.getSex())
                     .setScore(score);
             respDtos.add(tmpDto);
+        }
+
+        return new ResultJson<>(OK, "查询成功", respDtos);
+    }
+
+    /**
+     * 返回近五年科目平均成绩
+     */
+    @GetMapping("/getFiveYearResult")
+    public ResultJson<List<GetFiveYearResultRespDto>> getFiveYearResult(@RequestParam("subjectIds") List<Integer> subjectIds) {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        List<GetFiveYearResultRespDto> respDtos = new ArrayList<>();
+
+        for (Integer subjectId : subjectIds) {
+            GetFiveYearResultRespDto respDto = new GetFiveYearResultRespDto();
+            String[] resultScore = new String[5];
+
+            Map<Integer, Map<String, Double>> avgScoreByTime = resultService.getAvgScoreByTime(year - 4, year, subjectId);
+
+            for (Integer key : avgScoreByTime.keySet()) {
+                resultScore[Math.abs(year - key - 4)] = avgScoreByTime.get(key).get("score") + "";
+            }
+
+            respDto.setResultData(resultScore);
+            respDtos.add(respDto);
         }
 
         return new ResultJson<>(OK, "查询成功", respDtos);
