@@ -7,7 +7,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
@@ -15,17 +15,14 @@ public class MvcConfig implements WebMvcConfigurer {
     @Autowired
     private LoginInterceptor loginInterceptor;
 
-    @Autowired
-    private StringRedisTemplate redis;
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //注册自己的拦截器,并设置拦截的请求路径
         //addPathPatterns：拦截此请求路径的请求
         //excludePathPatterns：不拦截此路径的请求
-//        registry
-//                .addInterceptor(loginInterceptor)
-//                .addPathPatterns("/**")
-//                .excludePathPatterns("/user/**");
+        registry
+                .addInterceptor(loginInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/user/**");
     }
 }
