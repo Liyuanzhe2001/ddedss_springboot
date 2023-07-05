@@ -22,4 +22,9 @@ public interface LessonService extends IService<Lesson> {
      */
     public List<Lesson> getLessonListByTeacherId(Integer teacherId);
 
+    /**
+     * 删除课程安排
+     */
+    public Boolean deleteScheduleLesson(Integer classId,Short weekday,Short section);
+
 }

@@ -1,6 +1,8 @@
 package com.lyz.ddedss_springboot.controller;
 
 import com.lyz.ddedss_springboot.dto.resp.GetAllClassRespDto;
+import com.lyz.ddedss_springboot.dto.resp.GetAllRelevantClassesRespDto;
+import com.lyz.ddedss_springboot.dto.resp.GetAvgScoreByExamIdRespDto;
 import com.lyz.ddedss_springboot.dto.resp.GetClassNameByIdRespDto;
 import com.lyz.ddedss_springboot.entity.Class_;
 import com.lyz.ddedss_springboot.exception.ClassNotFoundException;
@@ -54,5 +56,19 @@ public class ClassController extends BaseController {
 
         return new ResultJson<>(OK, "查询成功", respDtos);
     }
+
+    @GetMapping("/getAllRelevantClasses")
+    public ResultJson<List<GetAllRelevantClassesRespDto>> getAllRelevantClasses() {
+        Integer teacher = getRoleId();
+        List<Class_> classes = classService.getClasses(teacher);
+        List<GetAllRelevantClassesRespDto> list = new ArrayList<>();
+        for (Class_ aClass : classes) {
+            list.add(new GetAllRelevantClassesRespDto()
+                    .setClassId(aClass.getId())
+                    .setClassName(aClass.getName()));
+        }
+        return new ResultJson<>(OK, "获取班级列表成功", list);
+    }
+
 
 }

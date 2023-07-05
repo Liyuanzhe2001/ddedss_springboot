@@ -14,4 +14,9 @@ public interface ClassService extends IService<Class_> {
      */
     public List<Class_> getAllClassList();
 
+    /**
+     * 获取教师教的所有班级名
+     */
+    public List<Class_> getClasses(Integer teacherId);
+
 }

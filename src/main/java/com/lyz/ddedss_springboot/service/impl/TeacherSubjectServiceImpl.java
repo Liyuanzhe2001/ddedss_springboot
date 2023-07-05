@@ -68,4 +68,5 @@ public class TeacherSubjectServiceImpl extends ServiceImpl<TeacherSubjectMapper,
         teacherSubjectList.forEach(teacherSubject -> list.add(teacherSubject.getId()));
         return list;
     }
+
 }

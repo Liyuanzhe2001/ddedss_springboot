@@ -33,4 +33,9 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class_> implement
     public List<Class_> getAllClassList() {
         return classMapper.selectList(new LambdaQueryWrapper<Class_>());
     }
+
+    @Override
+    public List<Class_> getClasses(Integer teacherId) {
+        return classMapper.getClassNames(teacherId);
+    }
 }

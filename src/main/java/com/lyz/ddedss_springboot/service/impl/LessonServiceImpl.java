@@ -49,4 +49,13 @@ public class LessonServiceImpl extends ServiceImpl<LessonMapper, Lesson> impleme
                 .in(Lesson::getTeacherSubjectId, teacherSubjectIds);
         return lessonMapper.selectList(lambdaQueryWrapper);
     }
+
+    @Override
+    public Boolean deleteScheduleLesson(Integer classId, Short weekday, Short section) {
+        LambdaQueryWrapper<Lesson> wrapper = new LambdaQueryWrapper<Lesson>()
+                .eq(Lesson::getClassId, classId)
+                .eq(Lesson::getWeekday, weekday)
+                .eq(Lesson::getSection, section);
+        return lessonMapper.delete(wrapper) > 0;
+    }
 }

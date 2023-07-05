@@ -1,11 +1,13 @@
 package com.lyz.ddedss_springboot.controller;
 
+import com.lyz.ddedss_springboot.dto.req.DeleteScheduleLessonReqDto;
 import com.lyz.ddedss_springboot.dto.req.ScheduleLessonReqDto;
 import com.lyz.ddedss_springboot.dto.resp.GetLessonsByClassIdRespDto;
 import com.lyz.ddedss_springboot.dto.resp.GetLessonsByTeacherIdRespDto;
 import com.lyz.ddedss_springboot.dto.resp.GetSubjectNameByIdRespDto;
 import com.lyz.ddedss_springboot.entity.Lesson;
 import com.lyz.ddedss_springboot.exception.FailedCreateLessonException;
+import com.lyz.ddedss_springboot.exception.FailedDeleteScheduleLessonException;
 import com.lyz.ddedss_springboot.service.LessonService;
 import com.lyz.ddedss_springboot.service.TeacherSubjectService;
 import com.lyz.ddedss_springboot.util.ResultJson;
@@ -72,6 +74,16 @@ public class LessonController extends BaseController {
         }
 
         return new ResultJson<>(OK, "课程创建成功");
+    }
+
+    @DeleteMapping("/deleteScheduleLesson")
+    public ResultJson<Void> deleteScheduleLesson(@RequestBody DeleteScheduleLessonReqDto reqDto) {
+        Boolean res = lessonService.deleteScheduleLesson(reqDto.getClassId(), reqDto.getWeekday(), reqDto.getSection());
+        if (res) {
+            return new ResultJson<>(OK, "删除成功");
+        } else {
+            throw new FailedDeleteScheduleLessonException("删除课程安排失败");
+        }
     }
 
 }
