@@ -1,5 +1,6 @@
 package com.lyz.ddedss_springboot.controller;
 
+import com.lyz.ddedss_springboot.dto.req.SetCourseEvaluationReqDto;
 import com.lyz.ddedss_springboot.dto.resp.GetAllExamByClassIdRespDto;
 import com.lyz.ddedss_springboot.dto.resp.GetExamListByStudentIdRespDto;
 import com.lyz.ddedss_springboot.entity.Class_;
@@ -10,10 +11,8 @@ import com.lyz.ddedss_springboot.service.ResultService;
 import com.lyz.ddedss_springboot.service.StudentService;
 import com.lyz.ddedss_springboot.util.ResultJson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,9 +31,6 @@ public class ExamController extends BaseController {
 
     @Autowired
     private ClassService classService;
-
-    @Autowired
-    private StudentService studentService;
 
     /**
      * 获取学生考试列表

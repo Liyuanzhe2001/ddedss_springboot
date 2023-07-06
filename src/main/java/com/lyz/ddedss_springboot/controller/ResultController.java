@@ -4,6 +4,7 @@ import cn.hutool.core.util.NumberUtil;
 import com.lyz.ddedss_springboot.dto.req.GetExaminationResultsReqDto;
 import com.lyz.ddedss_springboot.dto.req.GetStudentScoreListReqDto;
 import com.lyz.ddedss_springboot.dto.req.ModifyStudentsScoreReqDto;
+import com.lyz.ddedss_springboot.dto.req.SetCourseEvaluationReqDto;
 import com.lyz.ddedss_springboot.dto.resp.*;
 import com.lyz.ddedss_springboot.entity.Result;
 import com.lyz.ddedss_springboot.entity.Student;
@@ -188,4 +189,43 @@ public class ResultController extends BaseController {
 
         return new ResultJson<>(OK, "查询成功", respDtos);
     }
+
+    /**
+     * 预定考试打分
+     */
+    @PostMapping("/setScore")
+    public ResultJson<Void> setScore(@RequestBody SetCourseEvaluationReqDto reqDto) {
+        String start = reqDto.getStart();
+        String end = reqDto.getEnd();
+        redis.opsForValue().set("scoreStartTime", start);
+        redis.opsForValue().set("scoreEndTime", end);
+        return new ResultJson<>(OK, "设置成功");
+    }
+
+    /**
+     * 获取考试打分通知时间
+     */
+    @GetMapping("/getScoreTime")
+    public ResultJson<GetScoreTimeRespDto> getScoreTime() {
+        String startTime = redis.opsForValue().get("scoreStartTime");
+        String endTime = redis.opsForValue().get("scoreEndTime");
+        boolean startFlag = startTime != null, endFlag = endTime != null;
+        GetScoreTimeRespDto respDto = new GetScoreTimeRespDto();
+        if (startFlag && endFlag) {
+            respDto.setStart(startTime)
+                    .setEnd(endTime);
+            return new ResultJson<>(OK, "查询成功", respDto);
+        }
+        if (!startFlag && !endFlag) {
+            return new ResultJson<>(OK, "查询成功", respDto);
+        }
+        if (startFlag) {
+            redis.delete("scoreStartTime");
+        }
+        if (endFlag) {
+            redis.delete("scoreEndTime");
+        }
+        return new ResultJson<>(OK, "查询成功", respDto);
+    }
+
 }

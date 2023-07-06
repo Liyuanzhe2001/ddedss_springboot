@@ -18,4 +18,9 @@ public interface ExamService extends IService<Exam> {
      */
     public List<Exam> getExam(LocalDateTime startTime, LocalDateTime endTime);
 
+    /**
+     * 新增考试
+     */
+    public Boolean addExam(Exam exam);
+
 }

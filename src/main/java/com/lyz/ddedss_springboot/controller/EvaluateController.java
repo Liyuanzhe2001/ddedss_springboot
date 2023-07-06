@@ -54,13 +54,7 @@ public class EvaluateController extends BaseController {
     public ResultJson<GetEvaluationTimeRespDto> getEvaluationTime() {
         String startTime = redis.opsForValue().get("startTime");
         String endTime = redis.opsForValue().get("endTime");
-        boolean startFlag = true, endFlag = true;
-        if (startTime == null) {
-            startFlag = false;
-        }
-        if (endTime == null) {
-            endFlag = false;
-        }
+        boolean startFlag = startTime != null, endFlag = endTime != null;
         GetEvaluationTimeRespDto respDto = new GetEvaluationTimeRespDto();
         if (startFlag && endFlag) {
             respDto.setStart(startTime)

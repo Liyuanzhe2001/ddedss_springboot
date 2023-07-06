@@ -1,6 +1,7 @@
 package com.lyz.ddedss_springboot.component;
 
 import cn.hutool.jwt.JWTUtil;
+import com.lyz.ddedss_springboot.exception.InsufficientPermissionException;
 import com.lyz.ddedss_springboot.util.FinalData;
 import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -33,16 +34,16 @@ public class LoginInterceptor implements HandlerInterceptor {
         String userId = request.getSession().getAttribute("userId") + "";
 
         if (StringUtil.isNullOrEmpty(userId)) {
-            return true;
+            throw new InsufficientPermissionException("权限不足");
         }
 
         String userToken = redis.opsForValue().get(userId);
 
         if (StringUtil.isNullOrEmpty(userToken)) {
-            return true;
+            throw new InsufficientPermissionException("权限不足");
         }
 
-        return !userToken.equals(token);
+        return userToken.equals(token);
     }
 
     @Override

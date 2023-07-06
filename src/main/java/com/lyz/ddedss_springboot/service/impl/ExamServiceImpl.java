@@ -31,4 +31,10 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
                 .between(Exam::getCreateTime, startTime, endTime);
         return examMapper.selectList(lambdaQueryWrapper);
     }
+
+    @Override
+    public Boolean addExam(Exam exam) {
+        int row = examMapper.insert(exam);
+        return row > 0;
+    }
 }
