@@ -23,7 +23,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserMapper userMapper;
 
     @Override
-    public User getUserByNumber(Integer number) {
+    public User getUserByNumber(String number) {
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>()
                 .eq(User::getNumber, number);
 
@@ -120,5 +120,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new UserNotFoundExecption("未找到该用户");
         }
         return users.get(0);
+    }
+
+    @Override
+    public Boolean modifyNumber(Integer id, String number) {
+        LambdaUpdateWrapper<User> wrapper = new LambdaUpdateWrapper<User>()
+                .eq(User::getId, id)
+                .set(User::getNumber, number);
+        return update(wrapper);
+    }
+
+    @Override
+    public Boolean modifyEmail(Integer id, String email) {
+        LambdaUpdateWrapper<User> wrapper = new LambdaUpdateWrapper<User>()
+                .eq(User::getId, id)
+                .set(User::getEmail, email);
+        return update(wrapper);
     }
 }

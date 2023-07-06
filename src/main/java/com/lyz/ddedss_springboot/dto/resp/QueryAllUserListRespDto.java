@@ -23,7 +23,7 @@ public class QueryAllUserListRespDto implements Serializable {
     /**
      * 用户学号/工号
      */
-    private Long userNumber;
+    private String userNumber;
 
     /**
      * 用户名

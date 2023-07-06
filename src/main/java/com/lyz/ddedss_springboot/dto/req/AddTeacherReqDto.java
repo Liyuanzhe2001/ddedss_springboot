@@ -20,7 +20,7 @@ public class AddTeacherReqDto implements Serializable {
     /**
      * 工号
      */
-    private Long number;
+    private String  number;
 
     /**
      * 姓名

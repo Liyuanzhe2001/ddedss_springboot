@@ -18,4 +18,9 @@ public interface StudentService extends IService<Student> {
      */
     public List<Student> getStudents(Integer classId);
 
+    /**
+     * 修改姓名
+     */
+    public Boolean modifyName(Integer id,String name);
+
 }

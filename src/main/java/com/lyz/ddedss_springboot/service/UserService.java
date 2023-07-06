@@ -14,7 +14,7 @@ public interface UserService extends IService<User> {
      *
      * @return 用户
      */
-    public User getUserByNumber(Integer number);
+    public User getUserByNumber(String number);
 
     /**
      * 通过学号/工号 邮箱 判断是否存在该用户
@@ -50,5 +50,15 @@ public interface UserService extends IService<User> {
      * 查询非管理员用户
      */
     public User getNormalUser(Integer userId);
+
+    /**
+     * 修改用户学号/工号
+     */
+    public Boolean modifyNumber(Integer id, String number);
+
+    /**
+     * 修改用户邮箱
+     */
+    public Boolean modifyEmail(Integer id, String email);
 
 }

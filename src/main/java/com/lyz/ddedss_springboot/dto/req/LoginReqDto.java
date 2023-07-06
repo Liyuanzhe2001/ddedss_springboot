@@ -18,7 +18,7 @@ public class LoginReqDto implements Serializable {
     /**
      * 学号/工号
      */
-    private Integer number;
+    private String number;
 
     /**
      * 密码

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lyz.ddedss_springboot.dto.req.AddProfessionalReqDto;
 import com.lyz.ddedss_springboot.dto.req.AddTeacherReqDto;
+import com.lyz.ddedss_springboot.dto.req.ModifyUserReqDto;
 import com.lyz.ddedss_springboot.dto.req.QueryAllUserListReqDto;
 import com.lyz.ddedss_springboot.dto.resp.QueryAllUserListRespDto;
 import com.lyz.ddedss_springboot.entity.*;
@@ -51,7 +52,7 @@ public class AdminController extends BaseController {
      */
     @GetMapping("/queryAllUserList")
     public ResultJson<List<QueryAllUserListRespDto>> QueryAllUserList(QueryAllUserListReqDto reqDto) {
-        // 模糊查询number
+        // 模糊查询number、姓名
         Page<User> page = new Page<>(reqDto.getCurrentPage(), reqDto.getPageSize());
         page = userService.queryAllUserLike(reqDto.getSearchInput(), page);
 
@@ -68,9 +69,7 @@ public class AdminController extends BaseController {
                     username = studentService.getById(roleId).getName();
                     break;
                 case 1:
-                    Teacher teacher = teacherService.getById(roleId);
-                    username = teacher.getName();
-                    identity = (teacher.getIdentity() == (short) 0) ? (short) -1 : (short) 1;
+                    username = teacherService.getById(roleId).getName();
                     break;
                 case 2:
                     username = professionalService.getById(roleId).getName();
@@ -86,6 +85,41 @@ public class AdminController extends BaseController {
             respDtos.add(respDto);
         }
         return new ResultJson<>(OK, "查询成功", respDtos, page.getTotal());
+    }
+
+    /**
+     * 修改用户信息
+     */
+    @PutMapping("modifyUser")
+    public ResultJson<Void> modifyUser(@RequestBody ModifyUserReqDto reqDto) {
+        Boolean flag = userService.modifyNumber(reqDto.getId(), reqDto.getNumber());
+        if (!flag) {
+            throw new FailedModifyNumberException("修改学号/工号失败");
+        }
+        flag = userService.modifyEmail(reqDto.getId(), reqDto.getEmail());
+        if (!flag) {
+            throw new FailedModifyEmailException("修改邮箱失败");
+        }
+        User user = userService.getById(reqDto.getId());
+        Integer roleId = user.getRoleId();
+        Short identity = user.getIdentity();
+        // 0学生，1教师，2教育专家
+        switch (identity) {
+            case 0:
+                flag = studentService.modifyName(roleId, reqDto.getName());
+                break;
+            case 1:
+                flag = teacherService.modifyName(roleId, reqDto.getName());
+                break;
+            case 2:
+                flag = professionalService.modifyName(roleId, reqDto.getName());
+                break;
+        }
+        if (!flag) {
+            throw new FailedModifyNameException("姓名修改失败");
+        }
+        return new ResultJson<>(OK, "修改成功");
+
     }
 
     /**
@@ -244,5 +278,6 @@ public class AdminController extends BaseController {
         }
         return new ResultJson<>(OK, "创建成功");
     }
+
 
 }

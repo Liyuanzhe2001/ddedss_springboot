@@ -1,4 +1,4 @@
-package com.lyz.ddedss_springboot.dto.req;
+package com.lyz.ddedss_springboot.dto.resp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,23 +11,27 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class AddProfessionalReqDto implements Serializable {
+public class GetAllClassCodeInfoRespDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 工号
+     * 班级id
      */
-    private String number;
+    private Integer id;
 
     /**
-     * 姓名
+     * 班级名
      */
     private String name;
 
     /**
-     * 邮箱
+     * 人数
      */
-    private String email;
+    private Integer num;
 
+    /**
+     * 邀请码
+     */
+    private String code;
 }

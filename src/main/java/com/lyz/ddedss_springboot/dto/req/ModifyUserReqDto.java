@@ -11,23 +11,16 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class AddProfessionalReqDto implements Serializable {
+public class ModifyUserReqDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 工号
-     */
-    private String number;
+    private Integer id;
 
-    /**
-     * 姓名
-     */
     private String name;
 
-    /**
-     * 邮箱
-     */
+    private String number;
+
     private String email;
 
 }

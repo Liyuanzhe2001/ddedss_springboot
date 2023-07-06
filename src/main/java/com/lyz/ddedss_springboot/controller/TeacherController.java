@@ -42,13 +42,7 @@ public class TeacherController extends BaseController {
     private ExamService examService;
 
     @Autowired
-    private InstructorService instructorService;
-
-    @Autowired
     private ResultService resultService;
-
-    @Autowired
-    private StringRedisTemplate redis;
 
     /**
      * 通过班级id查询教师课程列表
@@ -114,44 +108,6 @@ public class TeacherController extends BaseController {
         }
 
         return new ResultJson<>(OK, "查询成功", respDtos);
-    }
-
-    /**
-     * 创建注册码
-     */
-    @GetMapping("/createInvite/{classId}")
-    public ResultJson<CreateInviteRespDto> createInvite(@PathVariable("classId") Integer classId) {
-        // 获取teacherId
-        Integer teacherId = getRoleId();
-        // 根据teacherId、classId查找instructor表数据
-        boolean flag = instructorService.judgeTeacher(teacherId, classId);
-        if (!flag) {
-            throw new InsufficientPermissionException("权限不足");
-        }
-
-        CreateInviteRespDto respDto = new CreateInviteRespDto();
-        // 判断是否有验证码
-        Set<String> keys = redis.keys("*");
-        for (String key : Objects.requireNonNull(keys)) {
-            if (key.length() == 32) {
-                if (Objects.equals(redis.opsForValue().get(key), String.valueOf(classId))) {
-                    Long timeRemaining = redis.opsForValue().getOperations().getExpire(key);
-                    Integer day = Math.toIntExact(timeRemaining / 60 / 60 / 24);
-                    Integer hour = Math.toIntExact(timeRemaining / 60 / 60 % 24);
-
-                    respDto.setInvite(key)
-                            .setDay(day)
-                            .setHour(hour);
-                    return new ResultJson<>(OK, "查询成功", respDto);
-                }
-            }
-        }
-        String inviteCode = UUID.randomUUID().toString().replaceAll("-", "");
-        redis.opsForValue().set(inviteCode, String.valueOf(classId), 7 , TimeUnit.DAYS);
-        respDto.setInvite(inviteCode)
-                .setHour(23)
-                .setDay(6);
-        return new ResultJson<>(OK, "创建成功", respDto);
     }
 
 

@@ -23,7 +23,7 @@ public class RegisterReqDto implements Serializable {
     /**
      * 学号
      */
-    private Long number;
+    private String number;
 
     /**
      * 姓名

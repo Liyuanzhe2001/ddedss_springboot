@@ -52,7 +52,7 @@ public class UserController extends BaseController {
      */
     @PostMapping("/login")
     public ResultJson<LoginRespDto> login(@RequestBody LoginReqDto loginReqDto) throws NoSuchAlgorithmException {
-        Integer number = loginReqDto.getNumber();
+        String number = loginReqDto.getNumber();
         String password = loginReqDto.getPassword();
 
         // 根据学号/工号获取用户信息
@@ -122,7 +122,7 @@ public class UserController extends BaseController {
     public ResultJson<Void> sendVerificationCode(@PathVariable("email") String email) {
         // 创建6位随机验证码
         String random = RandomUtil.createRandom(6);
-        redis.opsForValue().set(email, random, 60, TimeUnit.SECONDS);
+        redis.opsForValue().set(email, random, 180, TimeUnit.SECONDS);
 
         // 邮箱发送验证码至用户邮箱
         try {

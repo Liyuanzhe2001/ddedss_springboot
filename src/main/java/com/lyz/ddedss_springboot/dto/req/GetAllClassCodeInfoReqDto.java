@@ -11,23 +11,23 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class AddProfessionalReqDto implements Serializable {
+public class GetAllClassCodeInfoReqDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 工号
+     * 班级名
      */
-    private String number;
+    private String like;
 
     /**
-     * 姓名
+     * 当前页大小
      */
-    private String name;
+    private Long currentPage;
 
     /**
-     * 邮箱
+     * 每页大小
      */
-    private String email;
+    private Long pageSize;
 
 }
