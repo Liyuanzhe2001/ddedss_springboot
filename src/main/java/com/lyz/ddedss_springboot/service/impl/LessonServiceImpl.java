@@ -1,12 +1,14 @@
 package com.lyz.ddedss_springboot.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyz.ddedss_springboot.entity.Lesson;
 import com.lyz.ddedss_springboot.entity.TeacherSubject;
 import com.lyz.ddedss_springboot.mapper.LessonMapper;
 import com.lyz.ddedss_springboot.mapper.TeacherSubjectMapper;
 import com.lyz.ddedss_springboot.service.LessonService;
+import com.sun.corba.se.spi.legacy.connection.LegacyServerSocketEndPointInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,5 +59,12 @@ public class LessonServiceImpl extends ServiceImpl<LessonMapper, Lesson> impleme
                 .eq(Lesson::getWeekday, weekday)
                 .eq(Lesson::getSection, section);
         return lessonMapper.delete(wrapper) > 0;
+    }
+
+    @Override
+    public Boolean deleteClassLesson(Integer classId) {
+        LambdaUpdateWrapper<Lesson> wrapper = new LambdaUpdateWrapper<Lesson>()
+                .eq(Lesson::getClassId, classId);
+        return lessonMapper.delete(wrapper) != 0;
     }
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lyz.ddedss_springboot.entity.Student;
 import com.lyz.ddedss_springboot.entity.User;
 import com.lyz.ddedss_springboot.exception.ErrorNumberOrPasswordException;
 import com.lyz.ddedss_springboot.exception.UserNotFoundExecption;
@@ -136,5 +137,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .eq(User::getId, id)
                 .set(User::getEmail, email);
         return update(wrapper);
+    }
+
+    @Override
+    public Boolean deleteUserByStudentId(Integer studentId) {
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<User>()
+                .eq(User::getIdentity, 0)
+                .eq(User::getRoleId, studentId);
+        return remove(wrapper);
     }
 }

@@ -21,6 +21,6 @@ public interface StudentService extends IService<Student> {
     /**
      * 修改姓名
      */
-    public Boolean modifyName(Integer id,String name);
+    public Boolean modifyName(Integer id, String name);
 
 }

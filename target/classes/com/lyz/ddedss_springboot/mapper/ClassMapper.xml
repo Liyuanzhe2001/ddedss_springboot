@@ -11,4 +11,11 @@
                             from ddedss.teacher_subject
                             where teacher_id = #{teacherId}));
     </select>
+
+    <select id="getAllClassesLike" resultType="com.lyz.ddedss_springboot.entity.Class_">
+        select *
+        from ddedss.class
+        where is_deleted = 0
+          and name like "%"#{className}"%";
+    </select>
 </mapper>

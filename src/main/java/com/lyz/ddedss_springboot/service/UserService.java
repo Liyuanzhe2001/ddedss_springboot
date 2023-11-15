@@ -3,6 +3,7 @@ package com.lyz.ddedss_springboot.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lyz.ddedss_springboot.entity.User;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -60,5 +61,10 @@ public interface UserService extends IService<User> {
      * 修改用户邮箱
      */
     public Boolean modifyEmail(Integer id, String email);
+
+    /**
+     * 通过学生id删除用户
+     */
+    public Boolean deleteUserByStudentId(Integer studentId);
 
 }

@@ -11,4 +11,9 @@ public interface ClassMapper extends BaseMapper<Class_> {
 
     public List<Class_> getClassNames(Integer teacherId);
 
+    /**
+     * 模糊查询所有班级
+     */
+    public List<Class_> getAllClassesLike(String className);
+
 }

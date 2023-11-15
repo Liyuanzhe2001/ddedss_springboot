@@ -90,7 +90,7 @@ public class AdminController extends BaseController {
     /**
      * 修改用户信息
      */
-    @PutMapping("modifyUser")
+    @PutMapping("/modifyUser")
     public ResultJson<Void> modifyUser(@RequestBody ModifyUserReqDto reqDto) {
         Boolean flag = userService.modifyNumber(reqDto.getId(), reqDto.getNumber());
         if (!flag) {
@@ -120,19 +120,6 @@ public class AdminController extends BaseController {
         }
         return new ResultJson<>(OK, "修改成功");
 
-    }
-
-    /**
-     * 删除知识
-     */
-    @DeleteMapping("/deleteKnowledge/{knowledgeId}")
-    public ResultJson<Void> deleteKnowledge(@PathVariable("knowledgeId") Integer knowledgeId) {
-        boolean flag = knowledgeService.removeById(knowledgeId);
-        if (flag) {
-            return new ResultJson<>(OK, "删除成功");
-        } else {
-            throw new FailedDeleteKnowledgeException("删除知识失败");
-        }
     }
 
     /**
@@ -188,6 +175,22 @@ public class AdminController extends BaseController {
         return new ResultJson<>(OK, "修改成功");
     }
 
+    /**
+     * 删除知识
+     */
+    @DeleteMapping("/deleteKnowledge/{knowledgeId}")
+    public ResultJson<Void> deleteKnowledge(@PathVariable("knowledgeId") Integer knowledgeId) {
+        boolean flag = knowledgeService.removeById(knowledgeId);
+        if (flag) {
+            return new ResultJson<>(OK, "删除成功");
+        } else {
+            throw new FailedDeleteKnowledgeException("删除知识失败");
+        }
+    }
+
+    /**
+     * 新增教师
+     */
     @PostMapping("/addTeacher")
     public ResultJson<Void> addTeacher(@RequestBody AddTeacherReqDto reqDto) throws NoSuchAlgorithmException {
         // 创建教师对象
@@ -249,6 +252,9 @@ public class AdminController extends BaseController {
         return new ResultJson<>(OK, "创建成功");
     }
 
+    /**
+     * 新增教育专家
+     */
     @PostMapping("/addProfessional")
     public ResultJson<Void> addProfessional(@RequestBody AddProfessionalReqDto reqDto) throws NoSuchAlgorithmException {
         // 创建教育专家

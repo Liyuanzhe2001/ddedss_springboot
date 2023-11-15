@@ -27,4 +27,9 @@ public interface LessonService extends IService<Lesson> {
      */
     public Boolean deleteScheduleLesson(Integer classId,Short weekday,Short section);
 
+    /**
+     * 删除班级的课程
+     */
+    public Boolean deleteClassLesson(Integer classId);
+
 }

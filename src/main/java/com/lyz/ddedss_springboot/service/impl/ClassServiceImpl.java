@@ -58,4 +58,11 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class_> implement
     public List<Class_> getClasses(Integer teacherId) {
         return classMapper.getClassNames(teacherId);
     }
+
+    @Override
+    public Page<Class_> getAllDetailedLikeClassList(String like, Page<Class_> page) {
+        List<Class_> classes = classMapper.getAllClassesLike(like);
+        page.setRecords(classes);
+        return page;
+    }
 }

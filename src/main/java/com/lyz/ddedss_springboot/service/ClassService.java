@@ -16,7 +16,7 @@ public interface ClassService extends IService<Class_> {
     public List<Class_> getAllClassList();
 
     /**
-     * 模糊查询所有班级
+     * 模糊查询所有班级基本信息
      */
     public Page<Class_> getAllLikeClassList(String like, Page<Class_> page);
 
@@ -24,5 +24,10 @@ public interface ClassService extends IService<Class_> {
      * 获取教师教的所有班级名
      */
     public List<Class_> getClasses(Integer teacherId);
+
+    /**
+     * 模糊获取所有班级详细信息
+     */
+    public Page<Class_> getAllDetailedLikeClassList(String like, Page<Class_> page);
 
 }
